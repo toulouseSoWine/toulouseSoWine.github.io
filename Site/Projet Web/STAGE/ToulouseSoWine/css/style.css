@@ -1,0 +1,30 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17 juil. 2015, 10:46:17
+    Author     : SKOUNKOU
+*/
+b{
+    color : white;
+}
+
+.myText{
+    color: #ed2154;
+    height: 900px;
+}
+
+.mySlide{
+    background-color: red;
+}
+
+.myActivity:hover,
+.myEvent:hover{
+    background-color : rgba(250,205,105,0.6);
+}
+
+.myContact:hover{
+    background-color : #facd69;
+}

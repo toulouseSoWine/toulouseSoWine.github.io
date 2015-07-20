@@ -1,0 +1,9 @@
+[user]
+	name = Salah
+	email = salah.knk@gmail.com
+[alias]
+	co = chekout
+[core]
+	editor = gvim -f
+[gui]
+	recentrepo = C:/Users/Responsable/test
