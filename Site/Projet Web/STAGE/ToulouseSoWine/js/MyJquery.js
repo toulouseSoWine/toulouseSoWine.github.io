@@ -5,12 +5,19 @@
  */
 
 $(document).ready(function(){
-
+    
+    $('.myActivity').mouseenter(function(){
+        $('.text-muted').css('color','#fff');
+    });
+    $('.myActivity').mouseleave(function(){
+        $('.text-muted').css('color','#222');
+    });
     $('.myContact').mouseenter(function(){
-        $(this).css('background-color','rgb(250,205,105)');
+        $(this).css('background-color','rgba(182,1,79,0.6)');
+        $('.text-muted').css('color','#fff');
     });
     $('.myContact').mouseleave(function(){
-        $(this).css('background-color','rgba(250,205,105,0.5)');
+        $(this).css('background-color','rgb(182,1,79)');
     });
 
 });

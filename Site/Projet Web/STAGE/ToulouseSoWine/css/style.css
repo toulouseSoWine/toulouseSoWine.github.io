@@ -7,6 +7,12 @@ and open the template in the editor.
     Created on : 17 juil. 2015, 10:46:17
     Author     : SKOUNKOU
 */
+.test{
+    background-color: yellow;
+    width: 400px;
+    height: 400px;
+}
+
 b{
     color : white;
 }
@@ -16,15 +22,13 @@ b{
     height: 900px;
 }
 
-.mySlide{
-    background-color: red;
-}
-
 .myActivity:hover,
 .myEvent:hover{
-    background-color : rgba(250,205,105,0.6);
+    background-color : rgba(255,0,0,0.2);
+    color : white;
+    text-decoration-color: white;
 }
 
-.myContact:hover{
-    background-color : #facd69;
+.myContact{
+    background-color : #B6014F;
 }
