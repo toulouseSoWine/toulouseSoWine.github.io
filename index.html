@@ -15,7 +15,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/agency.css" rel="stylesheet">
+    <link href="css/agency_1.css" rel="stylesheet">
     
     <!-- Slider
     ================================================== -->
@@ -28,7 +28,7 @@
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
     <link href="css/styles.css" rel="stylesheet">
     <link href="css/myCss.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -36,6 +36,7 @@
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
 
     <script type="text/javascript" src="js/modernizr.custom.js"></script>
     
@@ -48,7 +49,7 @@
 
 </head>
 
-<body id="page-top" class="index">
+<body id="page-top" class="index" ng-controller="myCtrl">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -61,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">ToulouseSoWine</a>
+                <img class="myLogo" src="img/tsw/logo.png" alt="">
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -71,19 +72,22 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#activite">Activités</a>
+                        <a class="md-button md-primary page-scroll" href="#activite">Activités</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#evenement">événements</a>
+                        <a class="md-button md-primary page-scroll" href="#evenement">événements</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#partenaire">Partenaires</a>
+                        <a class="md-button md-primary page-scroll" href="#partenaire">Partenaires</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="md-button md-primary page-scroll" href="#contact">Contact</a>
                     </li>
                     <li class="active">
-                        <a class="page-scroll" data-target="#inscription" data-toggle="modal">Inscription</a>
+                        <a class="md-button md-primary page-scroll" 
+                           data-target="#connecter" 
+                           data-toggle="modal">Se connecter
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -115,7 +119,7 @@
                 </div>                
             </div>
             
-                <div class="onCarousel text-muted">
+                <div style="color: white;" class="onCarousel text-muted">
                     <strong>
                         <em>
                             Favorisez la connaissance et la découverte <br>
@@ -139,23 +143,23 @@
 <!-- ////////////////////////////////////////////////////////////////////// -->
 
     <!-- Activités Section -->
-    <section id="activite">
+    <div id="activite">
         <div id="tf-about" class="container">
             <div class="row text-center">
             <div class="section-title center">
-                <h2 class="text-center">Nos <strong>Activités</strong></h2>
+                <h2 class="text-center">Nous vous proposons plusieurs types d’activités</h2>
                 <div class="line">
                     <hr>
                 </div>
             </div>
-                    <h4 class="section-subheading text-muted">
+                    <p class="section-subheading">
                         ToulouseSoWine a pour but de favoriser la connaissance et 
                         la découverte des vins et du terroir du sud-ouest par 
                         des cycles ou séances d'initiation et d'information et 
                         par toutes animations en rapport avec l'objet de l'association. 
                         Elle s'adresse à toute personne physique majeure vivant 
                         ou de passage dans la région toulousaine.
-                    </h4>
+                    </p>
             </div>
             <br><br>
             <div class="row text-center">
@@ -164,8 +168,8 @@
                     <div class="thumbnail myThumbnail">
                       <img class="img-responsive" src="img/tsw/degustation.jpg" alt="..." style="width: 300px; height: 200px;">
                       <div class="caption">
-                        <h4 class="section-heading">Initiation à la dégustation</h4>
-                        <p class="text-muted">Dégustation dans des lieux athipiques de la région toulousaine de 4 à 6 vins du Sud-Ouest.</p>
+                        <h3 class="section-heading">Initiation à la dégustation</h3>
+                        <p>Dégustation dans des lieux athipiques de la région toulousaine de 4 à 6 vins du Sud-Ouest.</p>
                       </div>
                         <p class="col-xs-2 col-sm-6 col-md-4">
                            <a href="#" class="btn btn-default" role="button">
@@ -179,8 +183,8 @@
                     <div class="thumbnail myThumbnail">
                       <img class="img-responsive" src="img/tsw/cepage.jpg" alt="..." style="width: 300px; height: 200px;">
                       <div class="caption">
-                        <h4 class="section-heading">Découverte des cépages</h4>
-                        <p class="text-muted">Des moments sous le signe de la convivialité, pour découvrir les secrets aromatiques...</p>
+                        <h3 class="section-heading">Découverte des cépages</h3>
+                        <p>Des moments sous le signe de la convivialité, pour découvrir les secrets aromatiques...</p>
                       </div>
                         <p class="col-xs-2 col-sm-6 col-md-4">
                            <a href="#" class="btn btn-default" role="button">
@@ -194,8 +198,8 @@
                     <div class="thumbnail myThumbnail">
                       <img class="img-responsive" src="img/tsw/accord.png" alt="..." style="width: 300px; height: 200px;">
                       <div class="caption">
-                          <h4>Accord Mets & Vins</h4>
-                        <p class="text-muted">Dégusatation dans des lieux athipiques de la région toulousaine de 4 à 6 vin du Sud-Ouest.</p>
+                          <h3>Accord Mets & Vins</h3>
+                        <p>Dégusatation dans des lieux athipiques de la région toulousaine de 4 à 6 vin du Sud-Ouest.</p>
                       </div>
                         <p class="col-xs-2 col-sm-6 col-md-4">
                            <a href="#" class="btn btn-default" role="button">
@@ -207,28 +211,27 @@
                                 
             </div>
         </div>
-    </section>
+    </div>
 
 <!-- //////////////////////////////////////////////////////////////////// -->
 
 
     <!-- Event Section -->
-    <section id="evenement" ng-controller="myCtrl">
+    <section id="evenement">
         <div class="container">
 
             <div class="section-title center">
-                <h2 class="text-center">Nos <strong>événement</strong></h2>
+                <h2 class="text-center titrePage">Nos événement</h2>
                 <div class="line">
                     <hr>
                 </div>
             </div>
-            {{test}}
+            {{titreEvent}}
         </div>
     </section>
 
 
 <!-- //////////////////////////////////////////////////////////////////// -->
-
 
     <!-- Partenaires Section -->
     <div id="partenaire">
@@ -237,7 +240,7 @@
                 <div class="container">
 
                     <div class="section-title center">
-                        <h2>Nos <strong>Partenaires</strong></h2>
+                        <h2 class="titrePage">Nous vous proposons plusieurs types d’activités</h2>
                         <div class="line">
                             <hr>
                         </div>
@@ -299,8 +302,6 @@
     </div>
 
 <!-- //////////////////////////////////////////////////////////////////// -->
-
-<ng-include src="charte.html"></ng-include>
     
     <!-- Contact Section -->
     <section id="contact">
@@ -308,7 +309,7 @@
             <div class="row text-center">
                 <div class="col-lg-12">
                     <div class="section-title center">
-                        <h2 class="text-center">Nous <strong>Contacter</strong></h2>
+                        <h2 class="text-center myContact">Nous Contacter</h2>
                         <div class="line">
                             <hr>
                         </div>
@@ -316,7 +317,7 @@
                 </div>
 
                     <div class="caption">
-                        <h5 class="section-heading">Toulouse So Wine</h5>
+                        <h4 class="section-heading">Toulouse So Wine</h4>
                         <p class="text-muted">
                             Région Toulousaine
                             Association créée par l'équipe de SoEasyWine,
@@ -359,7 +360,9 @@
 
         </div>
     </section>
-
+    
+<!-- //////////////////////////////////////////////////////////////////// -->
+  
     <footer>
         <div class="container">
             <div class="row">
@@ -378,9 +381,9 @@
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
-                        <li><a data-toggle="modal" data-target="#charte">Charte Ethique</a>
+                        <li><a data-toggle="modal" data-target="#charte" class="myCursor">Charte Ethique</a>
                         </li>
-                        <li><a data-target="#">Mention Légales</a>
+                        <li><a data-target="#" class="myCursor">Mention Légales</a>
                         </li>   
                     </ul>
                 </div>
@@ -388,15 +391,59 @@
         </div>
     </footer>
 
-    <!-- Portfolio Modals -->
-    <!-- Use the modals below to showcase details about your portfolio projects! -->
+<!-- //////////////////////////////////////////////////////////////////// -->
+<!-- EN COURS -->  
+    <!-- Login Modal -->
+    <div class="modal fade" id="connecter" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header myHeadForm">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Se Connecter</h4>
+                </div>
 
+                <div class="modal-body">
+                    <!-- The form is placed inside the body of modal -->
+                    <form ng-submit="userLogin()" class="form-horizontal">
+                        
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Email</label>
+                            <div class="col-xs-5">
+                                <input type="email" class="form-control" ng-model="email" data-validation="email"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Mot de passe</label>
+                            <div class="col-xs-5">
+                                <input type="password" class="form-control" ng-model="password"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-8 col-xs-offset-3">
+                                <button type="submit" class="btn btn-primary">Connexion</button>
+                                <button type="button" data-target="#inscription" data-toggle="modal" class="btn btn-primary">Inscription</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+<!-- //////////////////////////////////////////////////////////////////// -->
+  <!-- login facebook pas au point refaire le design du formulaire -->
     <!-- Inscription Modal -->
  
     <div class="modal fade" id="inscription" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header myHeadForm">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -405,59 +452,59 @@
 
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
-                    <form id="loginForm" method="post" class="form-horizontal">
+                    <form ng-submit="userAdd()" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Nom</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" name="nom"/>
+                                <input type="text" 
+                                       class="form-control" 
+                                       ng-model="nom"/>
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Prénom</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" name="prenom"/>
+                                <input type="text" class="form-control" ng-model="prenom"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Age</label>
                             <div class="col-xs-5">
-                                <input type="number" class="form-control" name="age"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Adresse</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control"/>
+                                <input type="number" class="form-control" ng-model="age"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Ville</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" name="ville"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">CP</label>
-                            <div class="col-xs-5">
-                                <input type="number" class="form-control"/>
+                                <input type="text" class="form-control" ng-model="ville"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-xs-3 control-label">Email</label>
                             <div class="col-xs-5">
-                                <input type="email" class="form-control" name="email" data-validation="email"/>
+                                <input type="email" class="form-control" ng-model="email" data-validation="email"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-xs-5 col-xs-offset-3">
+                            <label class="col-xs-3 control-label">Mot de passe</label>
+                            <div class="col-xs-5">
+                                <input type="password" class="form-control" ng-model="password"/>
+                            </div>
+                        </div>
+
+/* mot de passe oublié flat-button
+   un bouton se connecter
+   "vous n'etes pas encore inscrit? s'inscrire!" */
+   
+                        <div class="form-group">
+                            <div class="col-xs-8 col-xs-offset-3">
                                 <button type="submit" class="btn btn-primary">Valider</button>
+                                <button type="button" ng-click="logFacebook()" class="btn btn-facebook">Facebook</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
                             </div>
                         </div>
@@ -466,8 +513,10 @@
             </div>
         </div>
     </div>
-    
-    
+
+<!-- //////////////////////////////////////////////////////////////////// -->
+
+    <!-- Modal Charte Ethique -->
       <div class="portfolio-modal modal fade" id="charte" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
@@ -483,7 +532,122 @@
                             <!-- Project Details Go Here -->
                             <h2>Charte Ethique</h2>
                             
-                            
+                                <div class="text-center center">
+                                   <img src='img/tsw/logo.png' alt='...'>
+
+
+                                   <h1>Charte éthique</h1>
+                                   <p class="item-intro text-muted">
+                                       ToulouseSoWine est une association loi 1901 ayant pour titre : " ToulouseSoWine " – Association Vins et Terroirs. 
+                                       L’association a pour but de favoriser la connaissance et la découverte des vins et du terroir du sud-ouest par 
+                                       des cycles ou séances d'initiation et d'information et par toutes animations en rapport avec l'objet de l'association. 
+                                       Elle s'adresse à toute personne physique majeure.
+
+                                       L’association permet également des achats 
+                                       groupés permettant de réaliser des économies en mutualisant des commandes à l’ensemble des membres intéressés.
+
+
+                                   <h3>Article 1 -             Les Valeurs de l’association</h3>
+                                   <p class="item-intro text-muted">
+
+                                   L’association s’appuie sur des valeurs auxquelles se réfèrent 
+                                   l’ensemble des adhérents, bienfaiteurs, invités et intervenants bénévoles occasionnels :
+                                   <br>
+                                   <strong>
+                                       Convivialité    Respect    Engagement    Partage
+                                   </strong>
+                                   <br>
+                                   Ces valeurs ont pour but de donner à chacun des éléments d’appréciation et des références dans la conduite de ses activités au sein de notre association en tant qu’adhérent, salarié, stagiaire ou intervenant bénévole occasionnel.
+                                   
+                                   <br><br>
+                                   <strong>Convivialité</strong><br>
+                                   La convivialité est l’un des fondements de notre association. Elle contribue à lui donner sa dimension humaine, au-delà des barrières sociales, en créant des nouveaux liens.
+                                   
+                                   <br><br>
+                                   <strong>Respect</strong><br>
+                                   Par son adhésion à ToulouseSoWine, chacun devient porteur de l’image et de la réputation de l’association qu’il cherchera à valoriser dans l’intérêt de tous.
+                                   Dans le cadre des actions de notre association, chacun s’interdit de porter atteinte à la dignité personnelle ou à la réputation professionnelle d’un autre adhérent. Par respect pour les convictions de chacun, les activités politiques et les pratiques religieuses que peuvent avoir les adhérents s’exercent exclusivement en dehors des activités organisées par notre association.
+
+                                   <br><br>
+                                   <strong>Engagement</strong><br> 
+                                   Les adhérents de ToulouseSoWine s’engagent à œuvrer ensemble au sein de l’association dans l’intérêt commun, sans chercher à tirer un avantage ou intérêt particulier par rapport à d’autres adhérents.
+
+                                   <br><br>
+                                   <strong>Partage</strong><br>
+                                   L’un des objectifs majeurs de ToulouseSoWine est de favoriser le partage d’expériences et faire découvrir les vins et les produits du terroir du sud-ouest.
+                                   Partager nos bonnes adresses et nos bons plans à l’ensemble des adhérents.
+                                   </p>
+
+                                   <h3>Article 2 -             L’admission des membres</h3>
+                                   <p class="item-intro text-muted">
+
+                                   Toute personne physique ou morale peut librement demander l’admission à l’association. La demande est écrite librement ou répond à un formulaire papier ou en ligne sur le site Internet de l’association.
+                                   La demande doit comprendre les éléments suivants :
+                                   </p>
+
+                                   <ul>         
+                                       <li>Nom et prénom du demandeur (personne morale : raison sociale)</li>
+                                       <li>Adresse du domicile du demandeur (personne morale : adresse du siège)</li>
+                                       <li>Adresse mail de contact</li>
+                                       <li>Date de naissance</li>
+                                       <li>Affinités avec le vin</li>
+                                       <li>Motivation de la demande</li>     
+                                   </ul>
+
+                                   <p>
+                                   Le Bureau examine chaque demande d’admission et y répond par courrier électronique ou par défaut par courrier papier après décision à la majorité simple des membres du Bureau. La voix du président est prépondérante en cas d’égalité.
+
+                                   Vous serez vous, une personne sympathique, aimant le partage, et notre culture du vin.
+                                   </p>
+                                   <br><br>
+                                   <h3>Article 3 -             Vie Privée</h3>
+                                   <p class="item-intro text-muted">
+
+                                   La vie privée de tous ses membres y est respectée
+
+                                   Les informations recueillies lors de l'adhésion font l’objet d’un traitement informatique et sont destinées au secrétariat de l’association. En application des articles 39 et suivants de la loi du 6 janvier 1978 modifiée, chaque membre bénéficie d’un droit d’accès et de rectification aux informations qui le concernent. Si vous souhaitez exercer ce droit et obtenir communication des informations vous concernant, veuillez-vous adresser en justifiant de votre identité un mail à l’attention du secrétaire du bureau. Vous pouvez également, pour des motifs légitimes, vous opposer au traitement des données vous concernant.
+                                   Les données personnelles sont conservées et archivées en respectant les recommandations de sécurité.
+
+                                   L'ensemble de vos évaluations et commentaires réalisés pendant nos événements seront susceptibles de faire l'objet d'un traitement informatique et pourront être utilisés pour enrichir ou évaluer la base de données de SoEasyWine.
+                                   En application des articles 39 et suivants de la loi du 6 janvier 1978 modifiée, chaque membre bénéficie d’un droit d’accès et de rectification aux informations qui le concernent. Si vous souhaitez exercer ce droit et obtenir communication des informations vous concernant, veuillez-vous adresser en justifiant de votre identité un mail à l’attention du secrétaire du bureau. Vous pouvez également, pour des motifs légitimes, vous opposer au traitement des données vous concernant par demande écrite.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 4 -             Participations aux évènements</h3>
+                                   <p class="item-intro text-muted">
+                                   Chaque membre de l’association peut librement participer aux évènements de l’association
+                                   qui l’intéresse. Pour les évènements payants, il doit s'acquitter du montant demandé par l'association au plus tard au début de l'évènement.
+                                   Un membre s’engage à participer aux évènements de l’association par inscription.
+                                   Un membre engagé à participer à un évènement qui aurait un empêchement devra prévenir au plus tôt les organisateurs. Si des frais ont été engagés et que personne n’a pu le remplacer, le bureau se réserve le droit de lui demander une participation aux frais.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 5 -             Organisations d’évènements</h3>
+                                   <p class="item-intro text-muted">
+                                   Les membres de l’association peuvent soumettre au Bureau des suggestions de thèmes afin que le fonctionnement de l’association soit le plus participatif.
+                                   Un membre peut donc organiser seul ou en équipe un ou plusieurs évènements ou animations en rapport avec l'objet de l'association, uniquement si le budget a été validé par le Bureau et que les valeurs de l’association soient bien respectées.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 6 -             Indemnités de remboursement</h3>
+                                   <p class="item-intro text-muted">
+                                   Seuls les membres élus du Bureau, peuvent autoriser d’autres membres bénévoles à engager des frais personnels. Ces membres bénévoles pourront alors prétendre au remboursement des frais engagés dans le cadre d’un ordre de mission et sur justifications.
+                                   Les dépenses validées par le bureau seront remboursées aux frais réels uniquement à la condition que ces frais correspondent à des dépenses : réelles, justifiées et engagées pour les besoins de l’activité associative. Tous les frais doivent obligatoirement être justifiés par les reçus originaux et/ou factures originales daté(e)s mentionnant impérativement le montant, la TVA, et l'identité du vendeur/prestataire. Les photocopies ou les relevés de cartes de crédit ne constituent pas des justificatifs valables aux yeux de l'administration sociale et fiscale.
+
+                                   Pour se faire rembourser, un bénévole doit donc obligatoirement créer une note de frais (document NDF ToulouseSoWine.xlsx) qu'il communiquera à l'association avec les originaux de ses justificatifs numérotés.
+                                   Le remboursement des frais kilométriques (véhicule personnel) se réfère au barème fiscal applicable aux bénévoles et revalorisé chaque année (BOI-BAREME-000001-20150316, 16 mars 2015). Il est nécessaire d'indiquer l'adresse de départ et celle d'arrivée ainsi que le nombre total de km (faire référence au site www.viamichelin.fr). Le bénévole s'engage également à fournir la photocopie de la carte grise de son véhicule.
+
+                                   Le remboursement des frais d'hébergement (nuitée déjeuner inclus) est plafonné à 60€ en région et à 80€ à Paris. Le remboursement des frais de repas est plafonné à 20€. Les remboursements des frais kilométriques seront remboursés uniquement pour les trajets de plus de 35 km (aller). Le remboursement des voyages sera systématiquement calculé sur le prix d’un billet 2e classe ou classe éco.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 7 -             Modification de la charte d’éthique</h3>
+                                   <p class="item-intro text-muted">
+                                   La présente charte éthique pourra être modifiée par le Conseil d’Administration et approuvée par l’assemblée générale à la majorité (simple ou par exemple des deux tiers) des membres.
+
+                                   La charte éthique a été approuvée par l'assemblée constitutive du 30 Avril 2015.
+                                   </p>
+                               </div>                           
                             
                             <button type="button" class="btn btn-primary" data-dismiss="modal">
                                 <i class="fa fa-times"></i>
@@ -495,11 +659,16 @@
             </div>
         </div>
     </div>
-    
+
+<!-- //////////////////////////////////////////////////////////////////// -->
+
     <!-- Angular module -->
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angularfire/dist/angularfire.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>    
     <script src="js/myApp.js"></script>   
     
     <!-- jQuery -->
@@ -516,7 +685,6 @@
     <script type="text/javascript" src="js/SmoothScroll.js"></script>
     <script type="text/javascript" src="js/jquery.isotope.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.1/jquery.form-validator.min.js"></script>
     <script src="js/owl.carousel.js"></script>
     
     <!-- Contact Form JavaScript -->
@@ -528,10 +696,6 @@
     <script src="js/main.js"></script>
     <script src="js/myJquery.js"></script>
     
-    <script>
-        $.validate();
-    </script>
-        
     
 </body>
 

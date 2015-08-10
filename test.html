@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 
 <head>
 
@@ -15,7 +15,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/agency.css" rel="stylesheet">
+    <link href="css/agency_1.css" rel="stylesheet">
     
     <!-- Slider
     ================================================== -->
@@ -28,7 +28,7 @@
     <link rel="stylesheet" type="text/css" href="css/responsive.css">
     <link href="css/styles.css" rel="stylesheet">
     <link href="css/myCss.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -36,6 +36,7 @@
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
 
     <script type="text/javascript" src="js/modernizr.custom.js"></script>
     
@@ -48,7 +49,7 @@
 
 </head>
 
-<body id="page-top" class="index">
+<body id="page-top" class="index" ng-controller="myCtrl">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -61,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">ToulouseSoWine</a>
+                <img class="myLogo" src="img/tsw/logo.png" alt="">
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -71,19 +72,22 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#activite">Activités</a>
+                        <a class="md-button md-primary page-scroll" href="#activite">Activités</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#evenement">événements</a>
+                        <a class="md-button md-primary page-scroll" href="#evenement">événements</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#partenaire">Partenaires</a>
+                        <a class="md-button md-primary page-scroll" href="#partenaire">Partenaires</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="md-button md-primary page-scroll" href="#contact">Contact</a>
                     </li>
                     <li class="active">
-                        <a class="page-scroll" data-target="#inscription" data-toggle="modal">Inscription</a>
+                        <a id="myBtn" class="md-button md-primary page-scroll" 
+                           data-target="#connecter" 
+                           data-toggle="modal">Se connecter
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -115,7 +119,7 @@
                 </div>                
             </div>
             
-                <div class="onCarousel text-muted">
+                <div style="color: white;" class="onCarousel text-muted">
                     <strong>
                         <em>
                             Favorisez la connaissance et la découverte <br>
@@ -139,245 +143,143 @@
 <!-- ////////////////////////////////////////////////////////////////////// -->
 
     <!-- Activités Section -->
-    <section id="activite">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Activités</h2>
-                        <div class="line">
-                            <hr>
-                        </div>                    
-                    <br>
-                    <h4 class="section-subheading text-muted">ToulouseSoWine a pour but de favoriser la connaissance et la découverte des vins et du terroir du sud-ouest par des cycles ou séances d'initiation et d'information et par toutes animations en rapport avec l'objet de l'association. Elle s'adresse à toute personne physique majeure vivant ou de passage dans la région toulousaine.</h4>
+    <div id="activite">
+        <div id="tf-about" class="container">
+            
+            <div class="row text-center">
+            <div class="section-title center">
+                <h2 class="text-center">Nos activités</h2>
+                <div class="line">
+                    <hr>
                 </div>
             </div>
+                <div class="col-lg-12">
+                    <p class="section-subheading text-center">
+                        ToulouseSoWine a pour but de favoriser la connaissance et 
+                        la découverte des vins et du terroir du sud-ouest par 
+                        des cycles ou séances d'initiation et d'information et 
+                        par toutes animations en rapport avec l'objet de l'association. 
+                        Elle s'adresse à toute personne physique majeure vivant 
+                        ou de passage dans la région toulousaine.
+                    </p>
+                </div>    
+            </div>
             <br><br>
-            <div class="row text-center">
+            
+            <div class="text-center" ng-repeat="info in myActivity">
+                <center>
                
-                  <div class="col-sm-6 col-md-4">
+                  <div class="col-sm-6 col-md-4 portfolio-item">
                     <div class="thumbnail myThumbnail">
-                      <img class="img-responsive" src="img/tsw/degustation.jpg" alt="..." style="width: 300px; height: 200px;">
+                      <img class="img-responsive" src="img/tsw/{{info.images}}" alt="..." style="width: 300px; height: 200px;">
                       <div class="caption">
-                        <h4 class="section-heading">Initiation à la dégustation</h4>
-                        <p class="text-muted">Dégustation dans des lieux athipiques de la région toulousaine de 4 à 6 vins du Sud-Ouest.</p>
-                      </div>
-                        <p class="col-xs-2 col-sm-6 col-md-4">
+                        <h3 class="section-heading">{{info.titre}}</h3>
+                        <p>{{info.description}}</p>
+                        <p class="col-xs-2 col-sm-6">
                            <a href="#" class="btn btn-default" role="button">
                               Button
                            </a>
                         </p>
-                    </div>
-                  </div>
-                
-                  <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail myThumbnail">
-                      <img class="img-responsive" src="img/tsw/cepage.jpg" alt="..." style="width: 300px; height: 200px;">
-                      <div class="caption">
-                        <h4 class="section-heading">Découverte des cépages</h4>
-                        <p class="text-muted">Des moments sous le signe de la convivialité, pour découvrir les secrets aromatiques...</p>
                       </div>
-                        <p class="col-xs-2 col-sm-6 col-md-4">
-                           <a href="#" class="btn btn-default" role="button">
-                              Button
-                           </a>
-                        </p>    
                     </div>
                   </div>
-                
-                  <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail myThumbnail">
-                      <img class="img-responsive" src="img/tsw/accord.png" alt="..." style="width: 300px; height: 200px;">
-                      <div class="caption">
-                          <h4>Accord Mets & Vins</h4>
-                        <p class="text-muted">Dégusatation dans des lieux athipiques de la région toulousaine de 4 à 6 vin du Sud-Ouest.</p>
-                      </div>
-                        <p class="col-xs-2 col-sm-6 col-md-4">
-                           <a href="#" class="btn btn-default" role="button">
-                              Button
-                           </a>
-                        </p>                      
-                    </div>
-                  </div>
-                                
+
+            </center>                    
             </div>
+            
         </div>
-    </section>
-
+    </div>
 <!-- //////////////////////////////////////////////////////////////////// -->
-
 
     <!-- Event Section -->
-    <section id="about">
+    <section id="evenement">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">événement</h2>
-                        <div class="line">
-                            <hr>
-                        </div>
+
+            <div class="section-title center">
+                <h2 class="text-center titrePage">Nos événement</h2>
+                <div class="line">
+                    <hr>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="timeline">
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/1.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>2009-2011</h4>
-                                    <h4 class="subheading">Our Humble Beginnings</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/2.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>March 2011</h4>
-                                    <h4 class="subheading">An Agency is Born</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/3.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>December 2012</h4>
-                                    <h4 class="subheading">Transition to Full Service</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <img class="img-circle img-responsive" src="img/about/4.jpg" alt="">
-                            </div>
-                            <div class="timeline-panel">
-                                <div class="timeline-heading">
-                                    <h4>July 2014</h4>
-                                    <h4 class="subheading">Phase Two Expansion</h4>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ut voluptatum eius sapiente, totam reiciendis temporibus qui quibusdam, recusandae sit vero unde, sed, incidunt et ea quo dolore laudantium consectetur!</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="timeline-inverted">
-                            <div class="timeline-image">
-                                <h4>Be Part
-                                    <br>Of Our
-                                    <br>Story!</h4>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            
+            <div id="myEvent">
             </div>
         </div>
     </section>
 
 
 <!-- //////////////////////////////////////////////////////////////////// -->
-
 
     <!-- Partenaires Section -->
     <div id="partenaire">
         <div id="tf-clients" class="text-center">
+            <center>
             <div class="overlay">
                 <div class="container">
 
                     <div class="section-title center">
-                        <h2>Nos <strong>Partenaires</strong></h2>
+                        <h2 class="titrePage">Nos partenaires</h2>
                         <div class="line">
                             <hr>
                         </div>
                     </div>
                     <div id="clients" class="owl-carousel owl-theme">
-                        <div class="item">
-                            <div class="hover-bg">
-                                <a href="#">
-                                    <div class="hover-text">
-                                        <h4>Joliet</h4>
-                                        <div class="clearfix"></div>
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <img src="img/tsw/Vins/Chateau JOLIET - Vin Rouge - Negrette.jpg" class="img-responsive" alt="...">
-                                </a>
+                        <div ng-repeat="p in myPartenaire">
+                            <div class="item">
+                                <div class="hover-bg">
+                                    <a href="#">
+                                        <div class="hover-text">
+                                            <h4>{{p.nom}}</h4>
+                                            <div class="clearfix"></div>
+                                            <i class="fa fa-plus"></i>
+                                        </div>
+                                        <img src="img/tsw/Vins/{{p.images}}" class="img-responsive" alt="..." style="max-height: 300px; max-width: 200px;">
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="hover-bg">
-                                <a href="#">
-                                    <div class="hover-text">
-                                        <h4>Cransac</h4>
-                                        <div class="clearfix"></div>
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <img src="img/tsw/Vins/cransac-blanc-renaiisance.jpg" class="img-responsive" alt="...">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="hover-bg">
-                                <a href="#">
-                                    <div class="hover-text">
-                                        <h4>Joliet</h4>
-                                        <div class="clearfix"></div>
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <img src="img/tsw/Vins/Chateau Joliet.jpg" class="img-responsive" alt="...">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="hover-bg">
-                                <a href="#">
-                                    <div class="hover-text">
-                                        <h4>Tariquet</h4>
-                                        <div class="clearfix"></div>
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <img src="img/tsw/Vins/chateau_tarriquet.jpg" class="img-responsive" alt="...">
-                                </a>
-                            </div>
-                        </div>                        
                     </div>
-
                 </div>
             </div>
+        </center>
         </div>
     </div>
 
 <!-- //////////////////////////////////////////////////////////////////// -->
-
     
     <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Contact Us</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
+    
+    <div id="contact" class="container">
+
+        <br>
+        <div class="myLigne"></div>
+        <br>
+        <p class="infoConso text-center text-muted">
+            L'abus d'alccol est dangereux pour la santé. Sachez consommer avec modération.
+            La consommation d’alcool est interdite aux mineurs de moins de 18 ans
+        </p>
+        <br>
+
+        <div class="row">
+
+                <div class="col-md-6">
+                    <div class="section-title center">
+                        <h4 class="text-center">Toulouse So Wine</h4>
+                    </div>
+                    <p class="text-muted text-center">
+                        Région Toulousaine Association créée par l'équipe de SoEasyWine,
+                        pour favoriser la découverte des vins et du terroir du Sud-Ouest.
+                        <br>
+                        Elle s'adresse à toute personne physique majeure.
+                    </p>
+                </div> 
+                <div class="col-md-6">
+                    <div class="section-title center">
+                        <h4 class="text-center myContact">Nous Contacter</h4>
+                    </div>
                     <form name="sentMessage" id="contactForm" novalidate>
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="text-center">
+
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Your Name *" id="name" required data-validation-required-message="Please enter your name.">
                                     <p class="help-block text-danger"></p>
@@ -387,28 +289,22 @@
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <input type="tel" class="form-control" placeholder="Your Phone *" id="phone" required data-validation-required-message="Please enter your phone number.">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
                                     <textarea class="form-control" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="col-lg-12 text-center">
-                                <div id="success"></div>
-                                <button type="submit" class="btn btn-xl">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 
+                                <div id="success"></div>
+                                <button id="myBtn" type="submit" class="btn btn-default">Envoyer</button>
+                            </div>
+                    </form>
+
+        </div>
+
+    </div>
+    </div>
+    
+<!-- //////////////////////////////////////////////////////////////////// -->
+  
     <footer>
         <div class="container">
             <div class="row">
@@ -427,100 +323,240 @@
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
-                        <li><a href="#">Privacy Policy</a>
+                        <li><a data-toggle="modal" data-target="#charte" class="myCursor">Charte Ethique</a>
                         </li>
-                        <li><a href="#">Terms of Use</a>
-                        </li>
+                        <li><a data-toggle="modal" data-target="#legal" class="myCursor">Mention Légales</a>
+                        </li>   
                     </ul>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Portfolio Modals -->
-    <!-- Use the modals below to showcase details about your portfolio projects! -->
+<!-- //////////////////////////////////////////////////////////////////// -->
+<!-- EN COURS -->  
+    <!-- Login Modal -->
+    <div class="modal fade" id="connecter" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header myHeadForm">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Se Connecter</h4>
+                </div>
 
-      <!-- Modal1 -->
-  
+                <div class="modal-body">
+                    <!-- The form is placed inside the body of modal -->
+                    <form ng-submit="userLogin()" class="form-horizontal">
+                         <md-grid-list
+                               md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6"
+                               md-row-height-gt-md="1:1" md-row-height="1:1"
+                               md-gutter="12px" md-gutter-gt-sm="8px" >
+                             
+                            <md-input-container>
+                                <label>Email</label>
+                                <input type="email"
+                                       ng-minlength="3"
+                                       ng-maxlength="30"
+                                       name="Nemail" 
+                                       ng-model="email"
+                                       required>
+                                <div ng-messages="myForm.Nemail.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                        
+                            <md-input-container>
+                                <label>Password</label>
+                                <input type="password"
+                                       ng-minlength="3"
+                                       ng-maxlength="15"
+                                       name="Npass" 
+                                       ng-model="password"
+                                       required>
+                                <div ng-messages="myForm.Npass.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
 
+                           <p>Vous n'êtes pas encore inscrit?   
+                                <a class="myCursor" data-target="#inscription" data-toggle="modal"> S'incrire !
+                                </a>
+                            </p>                             
+                            <button id="myBtn" type="submit" class="btn">Connexion</button>
+                            <button id="myRightPos" type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+
+                         </md-grid-list>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+<!-- //////////////////////////////////////////////////////////////////// -->
+  <!-- login facebook pas au point refaire le design du formulaire -->
+    <!-- Inscription Modal -->
+ 
     <div class="modal fade" id="inscription" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header myHeadForm">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">S'incrire</h4>
                 </div>
-
+                
+                <form ng-submit="addUsers()" class="form-horizontal" name="myForm">
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
-                    <form id="loginForm" method="post" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Nom</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" name="nom"/>
-                            </div>
-                        </div>
+                    
+                        
+                        <md-grid-list >
 
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Prénom</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" name="prenom"/>
+                            <md-input-container>
+                                <label>Nom</label>
+                                <input type="text"
+                                       ng-minlength="3"
+                                       ng-maxlength="25"
+                                       name="Nnom" 
+                                       ng-model="nom"
+                                       required>
+                                <div ng-messages="myForm.Nnom.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                        
+                        
+                        
+                            <md-input-container>
+                                <label>Prenom</label>
+                                <input type="text"
+                                       ng-minlength="3"
+                                       ng-maxlength="20"
+                                       name="Nprenom" 
+                                       ng-model="prenom"
+                                       required>
+                                <div ng-messages="myForm.Nprenom.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                        
+                        
+                            <md-input-container>
+                                <label>Date de naissance</label>
+                                <input type="date"
+                                       name="Ndate" 
+                                       ng-model="age"
+                                       required>
+                                <div ng-messages="myForm.Ndate.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                       
+                        
+                            <md-input-container>
+                                <label>Ville</label>
+                                <input type="text"
+                                       ng-minlength="3"
+                                       ng-maxlength="25"
+                                       name="Nville" 
+                                       ng-model="ville"
+                                       required>
+                                <div ng-messages="myForm.Nville.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                        
+                            <md-input-container>
+                                <label>Email</label>
+                                <input type="email"
+                                       ng-minlength="3"
+                                       ng-maxlength="30"
+                                       name="Nemail" 
+                                       ng-model="email"
+                                       required>
+                                <div ng-messages="myForm.Nemail.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                        
+                            <md-input-container>
+                                <label>Password</label>
+                                <input type="password"
+                                       ng-minlength="3"
+                                       ng-maxlength="15"
+                                       name="Npass" 
+                                       ng-model="password"
+                                       required>
+                                <div ng-messages="myForm.Npass.$error">
+                                    <div ng-message="required">Veuillez remplir ce champs.</div>
+                                </div>
+                            </md-input-container>
+                            <br>
+                            
+                            <p>Comment estime-tu ton niveau de connaissance des vins?</p>
+                            <div layout="column" layout-wrap>
+                                <md-radio-group class="md-primary">
+                                    <md-radio-button ng-repeat="n in radioData" ng-value="n.value" ng-click="toggle(n,niveau)">
+                                        {{ n.value }}
+                                    </md-radio-button>
+                                </md-radio-group>
                             </div>
-                        </div>
+                            <br>
+                            
+                            <p>Quel types de vins aimes-tu?</p>
+                            <div flex="50" flex-md="100" layout="column">
+                              <fieldset class="standard" flex>
+                                <div layout="row" layout-wrap>
+                                    <div flex="50"  ng-repeat="p in preference" ng-value="p.nom">
+                                        <md-checkbox class="md-primary" ng-checked="exists(p, types_preferer)" 
+                                                     ng-click="toggle(p, types_preferer)">
+                                            <img style="max-height: 100px; max-width: 100px;" src="img/tsw/{{ p.images}}" alt="">
+                                            <br>{{p.nom}}
+                                        </md-checkbox>
+                                    </div>
+                                </div>
+                              </fieldset>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Age</label>
-                            <div class="col-xs-5">
-                                <input type="number" class="form-control" name="age"/>
-                            </div>
-                        </div>
+                    </md-grid-list>
+                    
+                    <md-checkbox ng-click="selected()">                    
+                        <p style="font-size: 12px;">
+                            Je reconnais avoir pris connaissance de l’objet associatif,de la
+                            <a data-toggle="modal" data-target="#charte" class="myCursor">
+                                Charte Ethique
+                            </a> et des 
+                            <a data-toggle="modal" data-target="#adhesion" class="myCursor">
+                                Conditions d'adhésion.
+                            </a>
+                        </p>
+                    </md-checkbox>
 
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Adresse</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Ville</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" name="ville"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">CP</label>
-                            <div class="col-xs-5">
-                                <input type="number" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Email</label>
-                            <div class="col-xs-5">
-                                <input type="email" class="form-control" name="email"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-5 col-xs-offset-3">
-                                <button type="submit" class="btn btn-primary">Valider</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
+                    
+                <div class="modal-footer">
+                    
+                    <p style="font-size: 15px;" class="myLeftPos">Inscrivez vous via    
+                        <a class="myCursor" ng-click="logFacebook()"> Facebook !
+                        </a>
+                    </p>
+                    <button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox">Valider</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+
+                </div>
+            </form>    
             </div>
         </div>
     </div>
 
+<!-- //////////////////////////////////////////////////////////////////// -->
 
-
-    <!-- Portfolio Modal 1 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Modal Charte Ethique -->
+      <div class="portfolio-modal modal fade" id="charte" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -533,18 +569,128 @@
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
                             <!-- Project Details Go Here -->
-                            <h2>Project Name</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-responsive img-centered" src="img/portfolio/roundicons-free.png" alt="">
-                            <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                            <p>
-                                <strong>Want these icons in this portfolio item sample?</strong>You can download 60 of them for free, courtesy of <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">RoundIcons.com</a>, or you can purchase the 1500 icon set <a href="https://getdpd.com/cart/hoplink/18076?referrer=bvbo4kax5k8ogc">here</a>.</p>
-                            <ul class="list-inline">
-                                <li>Date: July 2014</li>
-                                <li>Client: Round Icons</li>
-                                <li>Category: Graphic Design</li>
-                            </ul>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            <br>
+                                <div class="text-center center">
+                                   <img src='img/tsw/logo.png' alt='...' style="width: 200px;">
+
+
+                                   <h1>Charte éthique</h1>
+                                   <p class="item-intro text-muted">
+                                       ToulouseSoWine est une association loi 1901 ayant pour titre : " ToulouseSoWine " – Association Vins et Terroirs. 
+                                       L’association a pour but de favoriser la connaissance et la découverte des vins et du terroir du sud-ouest par 
+                                       des cycles ou séances d'initiation et d'information et par toutes animations en rapport avec l'objet de l'association. 
+                                       Elle s'adresse à toute personne physique majeure.
+
+                                       L’association permet également des achats 
+                                       groupés permettant de réaliser des économies en mutualisant des commandes à l’ensemble des membres intéressés.
+
+
+                                   <h3>Article 1 -             Les Valeurs de l’association</h3>
+                                   <p class="item-intro text-muted">
+
+                                   L’association s’appuie sur des valeurs auxquelles se réfèrent 
+                                   l’ensemble des adhérents, bienfaiteurs, invités et intervenants bénévoles occasionnels :
+                                   <br>
+                                   <strong>
+                                       Convivialité    Respect    Engagement    Partage
+                                   </strong>
+                                   <br>
+                                   Ces valeurs ont pour but de donner à chacun des éléments d’appréciation et des références dans la conduite de ses activités au sein de notre association en tant qu’adhérent, salarié, stagiaire ou intervenant bénévole occasionnel.
+                                   
+                                   <br><br>
+                                   <strong>Convivialité</strong><br>
+                                   La convivialité est l’un des fondements de notre association. Elle contribue à lui donner sa dimension humaine, au-delà des barrières sociales, en créant des nouveaux liens.
+                                   
+                                   <br><br>
+                                   <strong>Respect</strong><br>
+                                   Par son adhésion à ToulouseSoWine, chacun devient porteur de l’image et de la réputation de l’association qu’il cherchera à valoriser dans l’intérêt de tous.
+                                   Dans le cadre des actions de notre association, chacun s’interdit de porter atteinte à la dignité personnelle ou à la réputation professionnelle d’un autre adhérent. Par respect pour les convictions de chacun, les activités politiques et les pratiques religieuses que peuvent avoir les adhérents s’exercent exclusivement en dehors des activités organisées par notre association.
+
+                                   <br><br>
+                                   <strong>Engagement</strong><br> 
+                                   Les adhérents de ToulouseSoWine s’engagent à œuvrer ensemble au sein de l’association dans l’intérêt commun, sans chercher à tirer un avantage ou intérêt particulier par rapport à d’autres adhérents.
+
+                                   <br><br>
+                                   <strong>Partage</strong><br>
+                                   L’un des objectifs majeurs de ToulouseSoWine est de favoriser le partage d’expériences et faire découvrir les vins et les produits du terroir du sud-ouest.
+                                   Partager nos bonnes adresses et nos bons plans à l’ensemble des adhérents.
+                                   </p>
+
+                                   <h3>Article 2 -             L’admission des membres</h3>
+                                   <p class="item-intro text-muted">
+
+                                   Toute personne physique ou morale peut librement demander l’admission à l’association. La demande est écrite librement ou répond à un formulaire papier ou en ligne sur le site Internet de l’association.
+                                   La demande doit comprendre les éléments suivants :
+                                   </p>
+
+                                    <br><p>         
+                                       Nom et prénom du demandeur (personne morale : raison sociale)<br>
+                                       Adresse du domicile du demandeur (personne morale : adresse du siège)<br>
+                                       Adresse mail de contact<br>
+                                       Date de naissance<br>
+                                       Affinités avec le vin<br>
+                                       Motivation de la demande<br>   
+                                    </p><br>
+
+                                   <p>
+                                   Le Bureau examine chaque demande d’admission et y répond par courrier électronique ou par défaut par courrier papier après décision à la majorité simple des membres du Bureau. La voix du président est prépondérante en cas d’égalité.
+
+                                   Vous serez vous, une personne sympathique, aimant le partage, et notre culture du vin.
+                                   </p>
+                                   <br><br>
+                                   <h3>Article 3 -             Vie Privée</h3>
+                                   <p class="item-intro text-muted">
+
+                                   La vie privée de tous ses membres y est respectée
+
+                                   Les informations recueillies lors de l'adhésion font l’objet d’un traitement informatique et sont destinées au secrétariat de l’association. En application des articles 39 et suivants de la loi du 6 janvier 1978 modifiée, chaque membre bénéficie d’un droit d’accès et de rectification aux informations qui le concernent. Si vous souhaitez exercer ce droit et obtenir communication des informations vous concernant, veuillez-vous adresser en justifiant de votre identité un mail à l’attention du secrétaire du bureau. Vous pouvez également, pour des motifs légitimes, vous opposer au traitement des données vous concernant.
+                                   Les données personnelles sont conservées et archivées en respectant les recommandations de sécurité.
+
+                                   L'ensemble de vos évaluations et commentaires réalisés pendant nos événements seront susceptibles de faire l'objet d'un traitement informatique et pourront être utilisés pour enrichir ou évaluer la base de données de SoEasyWine.
+                                   En application des articles 39 et suivants de la loi du 6 janvier 1978 modifiée, chaque membre bénéficie d’un droit d’accès et de rectification aux informations qui le concernent. Si vous souhaitez exercer ce droit et obtenir communication des informations vous concernant, veuillez-vous adresser en justifiant de votre identité un mail à l’attention du secrétaire du bureau. Vous pouvez également, pour des motifs légitimes, vous opposer au traitement des données vous concernant par demande écrite.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 4 -             Participations aux évènements</h3>
+                                   <p class="item-intro text-muted">
+                                   Chaque membre de l’association peut librement participer aux évènements de l’association
+                                   qui l’intéresse. Pour les évènements payants, il doit s'acquitter du montant demandé par l'association au plus tard au début de l'évènement.
+                                   Un membre s’engage à participer aux évènements de l’association par inscription.
+                                   Un membre engagé à participer à un évènement qui aurait un empêchement devra prévenir au plus tôt les organisateurs. Si des frais ont été engagés et que personne n’a pu le remplacer, le bureau se réserve le droit de lui demander une participation aux frais.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 5 -             Organisations d’évènements</h3>
+                                   <p class="item-intro text-muted">
+                                   Les membres de l’association peuvent soumettre au Bureau des suggestions de thèmes afin que le fonctionnement de l’association soit le plus participatif.
+                                   Un membre peut donc organiser seul ou en équipe un ou plusieurs évènements ou animations en rapport avec l'objet de l'association, uniquement si le budget a été validé par le Bureau et que les valeurs de l’association soient bien respectées.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 6 -             Indemnités de remboursement</h3>
+                                   <p class="item-intro text-muted">
+                                   Seuls les membres élus du Bureau, peuvent autoriser d’autres membres bénévoles à engager des frais personnels. Ces membres bénévoles pourront alors prétendre au remboursement des frais engagés dans le cadre d’un ordre de mission et sur justifications.
+                                   Les dépenses validées par le bureau seront remboursées aux frais réels uniquement à la condition que ces frais correspondent à des dépenses : réelles, justifiées et engagées pour les besoins de l’activité associative. Tous les frais doivent obligatoirement être justifiés par les reçus originaux et/ou factures originales daté(e)s mentionnant impérativement le montant, la TVA, et l'identité du vendeur/prestataire. Les photocopies ou les relevés de cartes de crédit ne constituent pas des justificatifs valables aux yeux de l'administration sociale et fiscale.
+
+                                   Pour se faire rembourser, un bénévole doit donc obligatoirement créer une note de frais (document NDF ToulouseSoWine.xlsx) qu'il communiquera à l'association avec les originaux de ses justificatifs numérotés.
+                                   Le remboursement des frais kilométriques (véhicule personnel) se réfère au barème fiscal applicable aux bénévoles et revalorisé chaque année (BOI-BAREME-000001-20150316, 16 mars 2015). Il est nécessaire d'indiquer l'adresse de départ et celle d'arrivée ainsi que le nombre total de km (faire référence au site www.viamichelin.fr). Le bénévole s'engage également à fournir la photocopie de la carte grise de son véhicule.
+
+                                   Le remboursement des frais d'hébergement (nuitée déjeuner inclus) est plafonné à 60€ en région et à 80€ à Paris. Le remboursement des frais de repas est plafonné à 20€. Les remboursements des frais kilométriques seront remboursés uniquement pour les trajets de plus de 35 km (aller). Le remboursement des voyages sera systématiquement calculé sur le prix d’un billet 2e classe ou classe éco.
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Article 7 -             Modification de la charte d’éthique</h3>
+                                   <p class="item-intro text-muted">
+                                   La présente charte éthique pourra être modifiée par le Conseil d’Administration et approuvée par l’assemblée générale à la majorité (simple ou par exemple des deux tiers) des membres.
+
+                                   La charte éthique a été approuvée par l'assemblée constitutive du 30 Avril 2015.
+                                   </p>
+                               </div>                           
+                            
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                <i class="fa fa-times"></i>
+                                Fermer
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -552,34 +698,10 @@
         </div>
     </div>
 
-    <!-- Portfolio Modal 2 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Project Heading</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-responsive img-centered" src="img/portfolio/startup-framework-preview.png" alt="">
-                            <p><a href="http://designmodo.com/startup/?u=787">Startup Framework</a> is a website builder for professionals. Startup Framework contains components and complex blocks (PSD+HTML Bootstrap themes and templates) which can easily be integrated into almost any design. All of these components are made in the same style, and can easily be integrated into projects, allowing you to create hundreds of solutions for your future projects.</p>
-                            <p>You can preview Startup Framework <a href="http://designmodo.com/startup/?u=787">here</a>.</p>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- //////////////////////////////////////////////////////////////////// -->
 
-    <!-- Portfolio Modal 3 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Modal Mentions Légales -->
+      <div class="portfolio-modal modal fade" id="legal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -592,12 +714,133 @@
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
                             <!-- Project Details Go Here -->
-                            <h2>Project Name</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-responsive img-centered" src="img/portfolio/treehouse-preview.png" alt="">
-                            <p>Treehouse is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. This is bright and spacious design perfect for people or startup companies looking to showcase their apps or other projects.</p>
-                            <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/treehouse-free-psd-web-template/">FreebiesXpress.com</a>.</p>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            <br>
+                                <div class="text-center center">
+                                   <img src='img/tsw/logo.png' alt='...' style="width: 200px;">
+
+
+                                   <h1>Mentions Légales</h1>
+                                    <p class="item-intro text-muted">
+                                        En visitant ce site, vous acceptez sans réserve les dispositions qui suivent. 
+                                        Ces dispositions pourront êtres modifiées à tout moment 
+                                        et sans préavis par l'équipe de ToulouseSoWine, propriétaire de ce site.
+                                   </p>
+                                   
+                                   <h3>Propriétaire du site</h3>
+                                   <p class="item-intro text-muted">
+
+                                        ToulouseSoWine
+                                        Adresse : 14, Rue Willy Brandt - 31520 Ramonville Saint Agne
+                                        Téléphone : demander coordonnée par le formulaire de contact
+                                        n° SIRET: en cours xxxxxxxxxxxxxx
+                                        <br>
+                                   </p>
+                                   
+                                   <h3>Hébergeur</h3>
+                                   <p class="item-intro text-muted">
+                                    <!-- //// -->
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Crédits</h3>
+                                   <p class="item-intro text-muted">
+                                        Réalisation du site : SoEasyWine
+                                        http://www.soeasywine.com 
+                                        <br>
+                                        Proudly created with Wix.com
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Crédits Photos</h3>
+                                   <p class="item-intro text-muted">
+                                        Les photos intégrées sur le présent site sont non contractuelles.
+                                        photo maquette - réalisation photo en-cours 
+                                   </p>
+
+                                   <br><br>
+                                   <h3>Copyright</h3>
+                                   <p class="item-intro text-muted">
+                                        Les informations diffusées sur ce site 
+                                        photographies, logos, vidéos, audio, textes et slogans)
+                                        sont couverts par le droit d’auteur et sont la propriété 
+                                        de ToulouseSoWine ou de tiers ayant donné l’autorisation de les utiliser.
+                                        Toute copie, partielle ou totale, par quelque moyen que ce soit, 
+                                        ne peut se faire sans l'accord préalable de ToulouseSoWine 
+                                        (en vertu de l’article L.122-4 du Code de la Propriété Intellectuelle).
+                                   </p>
+
+                                   <br><br>
+                                   <h2>Conditions d’utilisation</h2>
+                                   <br>
+                                   <h3>Adhésion</h3>
+                                   <p class="item-intro text-muted">
+                                        Les informations recueillies lors de l'adhésion font l’objet d’un traitement informatique et 
+                                        sont destinées au secrétariat de l’association. En application des articles 39 
+                                        et suivants de la loi du 6 janvier 1978 modifiée, chaque membre bénéficie 
+                                        d’un droit d’accès et de rectification aux informations qui le concernent.
+                                        Si vous souhaitez exercer ce droit et obtenir communication des informations vous concernant,
+                                        veuillez-vous adresser en justifiant de votre identité un mail à l’attention du secrétaire du bureau.
+                                        Vous pouvez également,pour des motifs légitimes, vous opposer au traitement des données vous concernant.
+                                   </p>
+                                   
+                                   <br><br>
+                                   <h3>Traitement des données à caractère personnel</h3>
+                                   <p class="item-intro text-muted">
+                                        Déclaration CNIL : Dispense n° 8 - 
+                                        Délibération n° 2010-229 du 10 juin 2010 dispensant de déclaration 
+                                        les traitements automatisés de données à caractère
+                                        personnel mis en œuvre par des organismes à but non 
+                                        lucratif abrogeant et remplaçant la délibération n° 2006-130 du 9 mai 2006.
+                                   </p>
+                                   
+                                   <br><br>
+                                   
+                                   <h3>Limitation de responsabilité</h3>
+                                   <p class="item-intro text-muted">
+                                        Les informations présentes sur le site http://toulousesowine.wix.com/association
+                                        sont censées être exactes au moment de leurs publications. 
+                                        Malgré le soin apporté au traitement des informations, 
+                                        ToulouseSoWine décline toute responsabilité concernant les erreurs, 
+                                        les informations devenues inexactes ou les omissions involontaires portant sur les informations diffusées sur ce site.
+                                        ToulouseSoWine ne peut être tenu responsable de l'interprétation 
+                                        des informations contenues dans ce site, ni des conséquences de leur utilisation.
+                                        ToulouseSoWine peut à tout moment, modifier ces informations sans avis préalable.
+                                        L’ensemble de ce site relève de la législation française 
+                                        et internationale sur le droit d’auteur et la propriété intellectuelle. 
+                                        Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables 
+                                        et les représentations iconographiques et photographiques.
+                                        Notre site peut contenir des liens vers d'autres sites internet.
+                                        ToulouseSoWine ne peut être tenue responsable du contenu,
+                                        publicités, produits, services ou tout autre matériel disponible sur ou depuis ces sites.
+                                        ToulouseSoWine ne saurait être tenue pour responsable :<br>
+                                        des interruptions de l’accès au service et des conséquences
+                                        qui peuvent en découler pour l’utilisateur ;<br>
+                                        de tous dommages résultant d'une intrusion frauduleuse 
+                                        d'un tiers ayant modifié des informations disponibles sur le site 
+                                        ou de la présence de virus sur le site ayant endommagé votre ordinateur, 
+                                        terminal mobile ou tablette et/ou les données y figurant ;<br>
+                                        et plus généralement de tout dommage direct ou indirect, 
+                                        pouvant résulter de l'accès au site, de l'impossibilité d'y accéder 
+                                        ou de l’inexactitude d’une quelconque information figurant sur le site.
+                                   </p>
+                                   
+                                   <br><br>
+                                   
+                                   <h3>Achats Groupés</h3>
+                                   <p class="item-intro text-muted">
+                                        Notre association n'est pas autorisé à vendre de l'alcool au grand public.
+                                        Seuls les membres de l'association peuvent profiter de nos achats groupés.
+                                        <br>
+                                        L’abus d’alcool est dangereux pour la santé. Consommez avec modération.
+                                   </p>
+                                   
+                                   
+                               </div>                           
+                            
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                <i class="fa fa-times"></i>
+                                Fermer
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -605,8 +848,10 @@
         </div>
     </div>
 
-    <!-- Portfolio Modal 4 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- //////////////////////////////////////////////////////////////////// -->
+
+    <!-- Modal Conditions d'adhésion -->
+      <div class="portfolio-modal modal fade" id="adhesion" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -619,12 +864,118 @@
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
                             <!-- Project Details Go Here -->
-                            <h2>Project Name</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-responsive img-centered" src="img/portfolio/golden-preview.png" alt="">
-                            <p>Start Bootstrap's Agency theme is based on Golden, a free PSD website template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Golden is a modern and clean one page web template that was made exclusively for Best PSD Freebies. This template has a great portfolio, timeline, and meet your team sections that can be easily modified to fit your needs.</p>
-                            <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/golden-free-one-page-web-template/">FreebiesXpress.com</a>.</p>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                            <br>
+                                <div class="text-center center">
+                                   <img src='img/tsw/logo.png' alt='...' style="width: 200px;">
+
+
+                                   <h1>Conditions d'adhésion</h1>
+
+                                   <h3>Objet</h3>
+                                   <p class="item-intro text-muted">
+                                        Cette association a pour but de favoriser la connaissance et 
+                                        la découverte des vins et du terroir du sud-ouest
+                                        par des cycles ou séances d'initiation et d'information et
+                                        par toutes animations en rapport avec l'objet de l'association. 
+                                        Elle s'adresse à toute personne physique majeure.
+                                        L’association permet également des achats groupés permettant de réaliser 
+                                        des économies en mutualisant des commandes à l’ensemble des membres intéressés.
+                                        <br>
+                                   </p>
+                                   
+                                   <h3>Composition</h3>
+                                   <p class="item-intro text-muted">
+                                        Peuvent être membres de l'association les personnes physiques 
+                                        majeures ainsi que les personnes morales, 
+                                        notamment les associations, les confréries, les instituts, 
+                                        les entreprises viticoles et/ou productrices de produits locaux 
+                                        et/ou toute autre entreprise commercialisant les vins du sud-ouest 
+                                        et des produit locaux, et les centres de recherches, 
+                                        sous réserve qu'ils désignent une personne physique pour les représenter.
+                                   </p>
+
+                                   <br>
+                                   
+                                   <p class="item-intro text-muted">
+                                        Pour être membre de l'association,il faut souscrire un bulletin d'adhésion 
+                                        et être agréé parle Conseil d'Administration.
+                                        <br>
+                                        L'association se compose de :     
+                                   </p>
+                                   <br>
+                                   <h5>membres fondateurs :</h5>
+                                   <p class="item-intro text-muted">
+                                        Matthieu CAYLET, instigateur du ToulouseSoWine – Association Vins et Terroirs
+                                        Luc LABBE et Emmanuel VINAS instigateurs associés.
+                                        Ils sont membres de droit du Conseil d'Administration, 
+                                        et disposent du pouvoir délibératif.
+                                        Ils sont les garants de l’esprit fondateur de l’association.
+                                        Membre à vie, ils règlent le coût, fixé par le Conseil d’Administration, 
+                                        de leur participation aux différentes activités pour lesquelles ils s’inscrivent.   
+                                   </p>
+                                   <br>
+                                   
+                                   <h5>membres adhérents actifs :</h5>
+                                   <p class="item-intro text-muted">
+                                        Sont les adhérents qui s’inscrivent et participent aux diverses activités, et qui sont chargés, 
+                                        par le biais d’une lettre de mission, de l’organisation logistique et matérielle des activités.
+                                        Ils versent une adhésion annuelle et règlent le coût, fixé par le Conseil d’Administration, 
+                                        de leur participation aux différentes activités pour lesquelles ils s’inscrivent.                                       
+                                   </p>
+                                   <br>
+                                   
+                                   <h5>membres adhérents :</h5>
+                                   <p class="item-intro text-muted">
+                                        Ils s’inscrivent et participent aux diverses activités.
+                                        Ils versent une adhésion annuelle et règlent le coût, fixé par le Conseil d’Administration, 
+                                        de leur participation aux différentes activités pour lesquelles ils s’inscrivent.                                
+                                   </p>
+                                   <br>
+                                   
+                                   <h5>membres bienfaiteurs :</h5>
+                                   <p class="item-intro text-muted">
+                                        Les membres qui, en dehors de toute adhésion annuelle ou de participation à des animations, 
+                                        collaborent généreusement à l’activité du club.
+                                        Ces membres ne peuvent être élus au Conseil d’Administration.       
+                                   </p>
+                                   <br>
+                                   
+                                   <h5>invités :</h5>
+                                   <p class="item-intro text-muted">
+                                        Sont appelées invités, les personnes qui, après inscription à une activité, 
+                                        généralement événements de dégustation, repas/concours, soiréesDécouverte du Club, 
+                                        s’acquittent du montant de leur participation à l'activité considérée.
+                                        Ces personnes ne sont pas considérées comme membres adhérents du club. 
+                                        Donc ils n’ont pas le pouvoir de voter aux Assemblées Générales et 
+                                        ne peuvent être élus au Conseil d’Administration.
+                                   </p>
+                                   <br>
+                                   
+                                   <br><br>
+                                   <h3>Montant d'adhésion</h3>
+                                   <p class="item-intro text-muted">
+                                        Réalisation du site : SoEasyWine
+                                        http://www.soeasywine.com 
+                                        <br>
+                                        Proudly created with Wix.com
+                                   </p>
+                                        Après en avoir délibéré, l’Assemblée Générale constitutive adopte 
+                                        le montant des cotisations pour l’adhésion à l’association :
+                                        <br>
+                                        <ul>
+                                            <li>membres fondateurs : 100€</li> 
+                                            <li>les personnes physiques majeures : 10€ annuel</li>
+                                            <li>les associations, les confréries, les instituts : 150€ annuel</li>
+                                            <li>les entreprises viticoles et/ou productrices de produits locaux : 70€ annuel</li>
+                                            <li>toute autre entreprise commercialisant les vins du sud-ouest : 70€ annuel</li>
+                                            <li>les centres de recherches : 500€ annuel</li>
+                                        </ul>
+                               </div>                           
+                            
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                <i class="fa fa-times"></i>
+                                Fermer
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -632,64 +983,17 @@
         </div>
     </div>
 
-    <!-- Portfolio Modal 5 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <!-- Project Details Go Here -->
-                            <h2>Project Name</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-responsive img-centered" src="img/portfolio/escape-preview.png" alt="">
-                            <p>Escape is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Escape is a one page web template that was designed with agencies in mind. This template is ideal for those looking for a simple one page solution to describe your business and offer your services.</p>
-                            <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/escape-one-page-psd-web-template/">FreebiesXpress.com</a>.</p>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- //////////////////////////////////////////////////////////////////// -->
 
-    <!-- Portfolio Modal 6 -->
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <!-- Project Details Go Here -->
-                            <h2>Project Name</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-responsive img-centered" src="img/portfolio/dreams-preview.png" alt="">
-                            <p>Dreams is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Dreams is a modern one page web template designed for almost any purpose. It’s a beautiful template that’s designed with the Bootstrap framework in mind.</p>
-                            <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/dreams-free-one-page-web-template/">FreebiesXpress.com</a>.</p>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <!-- Angular module -->
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angularfire/dist/angularfire.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>    
+    
     <script src="js/myApp.js"></script>   
     
     <!-- jQuery -->
@@ -716,6 +1020,7 @@
     <script src="js/agency.js"></script>
     <script src="js/main.js"></script>
     <script src="js/myJquery.js"></script>
+    
     
 </body>
 
