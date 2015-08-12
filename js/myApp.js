@@ -10,13 +10,14 @@
 
 var app = angular.module('myApp',['ngMaterial','ngMessages','firebase']);
 
-angular.element(document).ready(function() {
-    angular.bootstrap(document, ['myApp']);
-});
-
-
-app.controller("myCtrl",["$scope","$firebaseArray", "$firebaseAuth",
-    function($scope,$firebaseArray,$firebaseAuth,$http){
+  
+app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
+    function($scope,$firebaseArray,$firebaseAuth,$window,$http){
+    
+    angular.element(document).ready(function() {
+        angular.bootstrap(document, ['myApp']);
+    });   
+    
     
     // Informations sur les activité
     $scope.myActivity = [
@@ -41,7 +42,7 @@ app.controller("myCtrl",["$scope","$firebaseArray", "$firebaseAuth",
             nom: 'Tariquet'}
     ];
     
-    var parDefaut = ['nom','prenom','01012015','ville','motdepasse','votre@email.com'];
+    var parDefaut = ['nom','prenom','','ville','motdepasse','votre@email.com'];
     
     // Niveau de connaissance
     $scope.radioData = [
@@ -118,10 +119,12 @@ app.controller("myCtrl",["$scope","$firebaseArray", "$firebaseAuth",
         else 
         {
            console.log("Successfully created user account with uid:", userData.uid);
-           alert("Succes creation");
+           var niveau = $scope.niveau[0];
+           var typeVin = $scope.types_preferer;
+           alert("Succes creation  " + niveau);
            // Si le compte se créer sans problème on enregistre les données dans la base
-           users.$add({ 
-               adherents:{
+           users.$add({
+            adherents: {
                     id: userData.uid,
                     nom: $scope.nom,
                     prenom: $scope.prenom,
@@ -129,10 +132,10 @@ app.controller("myCtrl",["$scope","$firebaseArray", "$firebaseAuth",
                     ville: $scope.ville,
                     email:$scope.email,
                     password : $scope.password
-               },
-               niveau_de_connaissance : $scope.niveau[0],
-               preferences : $scope.types_preferer.nom
-           });
+            },
+               niveau_de_connaissance : niveau,
+               preferences : typeVin
+          });
 
         }
 
@@ -159,28 +162,91 @@ app.controller("myCtrl",["$scope","$firebaseArray", "$firebaseAuth",
             }
         );
     };
+    
+    /////////////////////////////////////
+    /////       FACBOOK LOGIN       /////
+    /////////////////////////////////////
 
-    // A développer
-    $scope.logFacebook = function(){
-        var reffb = $firebaseAuth(ref);
-        alert("logFacebook() entrez");
-        reffb.authWithOAuthRedirect("facebook", function(error) {
-            if (error) {
-              console.log("Login Failed!", error);
-              alert("error");
-            } else {
-                alert("redirection ok");
-              // We'll never get here, as the page will redirect on success.
-            }
-          });
-        alert("SORTIE DE LA FONCTION");
+    // Initialisation de l'API
+    $window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '788769794573763',
+        status     : true,
+        cookie     : true,
+        xfbml      : true,
+        oauth      : true,
+        version    : 'v2.4'
+      });
     };
-   
+    
+    // Chargement du SDK asynchrone
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/fr_FR/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+    
+    ////////////////////////////////////////
+
+    $scope.login = function() {
+        ref.authWithOAuthPopup("facebook", function(error, authData) {
+            //authData.facebook.id+' // '+authData.facebook.email);
+            
+          if (error) {
+                console.log("Login Failed!", error);
+          } else {
+              //alert(authData.facebook.cachedUserProfile.last_name);
+                // the access token will allow us to make Open Graph API calls
+                console.log(authData.facebook.accessToken); 
+                users.$add({
+                 adherents: {
+                         id: authData.uid,
+                         nom: authData.facebook.cachedUserProfile.last_name,
+                         prenom: authData.facebook.cachedUserProfile.first_name,
+                         email:authData.facebook.email
+                 }
+               });
+          }
+        }, {
+          scope: "email,user_likes,public_profile" // the permissions requested
+        });        
+    };
     
    
-/*    // MeetUp API url utiliser pour recevoir les données sous format JSON
-    var meetupAPI = 
-            $http.jsonp("https://api.meetup.com/2/events?&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621");
+    
+    /*
+            <div class="fb-login-button" 
+                 data-max-rows="1" 
+                 data-size="medium" 
+                 data-show-faces="false" 
+                 data-auto-logout-link="true"></div>*/
+    /////////////////////////////////////
+    /////        MEETUP API         /////
+    /////////////////////////////////////
+   // MeetUp API url utiliser pour recevoir les données sous format JSON
+    $scope.meetupURL = 
+            'https://api.meetup.com/2/events?&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
+    
+    // On définit la méthode qui nous permettra de récuperer les info de l'événements
+    $scope.methode = 'JSONP';
+    
+    $scope.fetch = function() {
+        $scope.code = null;
+        $scope.response = null;
+
+        $http({method: GET, url: $scope.meetupURL, cache: $templateCache}).
+          success(function(response, status) {
+            $scope.status = status;
+            $scope.data = response;
+          }).
+          error(function(data, status) {
+            $scope.data = data || "Request failed";
+            $scope.status = status;
+        });
+    };    
+/* 
 
 var test = {
     "results":

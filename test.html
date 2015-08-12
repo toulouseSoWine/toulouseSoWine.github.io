@@ -39,7 +39,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
 
     <script type="text/javascript" src="js/modernizr.custom.js"></script>
-    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -50,7 +49,7 @@
 </head>
 
 <body id="page-top" class="index" ng-controller="myCtrl">
-
+<div id="fb-root"></div>
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -203,6 +202,7 @@
             </div>
             
             <div id="myEvent">
+                
             </div>
         </div>
     </section>
@@ -539,16 +539,20 @@
                 </div>
                     
                 <div class="modal-footer">
-                    
+                    <!--
                     <p style="font-size: 15px;" class="myLeftPos">Inscrivez vous via    
-                        <a class="myCursor" ng-click="logFacebook()"> Facebook !
+                        <a class="myCursor" ng-click="login()"> Facebook !
                         </a>
-                    </p>
+                    </p>-->
+<button scope="public_profile,email" ng-click="FBLogin();">login
+</button>
                     <button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox">Valider</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 
                 </div>
-            </form>    
+            </form>  
+                <div id="status">
+</div>
             </div>
         </div>
     </div>
@@ -984,16 +988,17 @@
     </div>
 
 <!-- //////////////////////////////////////////////////////////////////// -->
-
+    
     <!-- Angular module -->
+  
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/ng-facebook/ngFacebook.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-messages/angular-messages.js"></script>    
-    
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="js/myApp.js"></script>   
     
     <!-- jQuery -->
