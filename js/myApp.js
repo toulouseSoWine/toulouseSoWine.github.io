@@ -12,12 +12,11 @@ var app = angular.module('myApp',['ngMaterial','ngMessages','firebase']);
 
   
 app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
-    function($scope,$firebaseArray,$firebaseAuth,$window,$http){
+    function($scope,$firebaseArray,$firebaseAuth,$http){
     
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['myApp']);
     });   
-    
     
     // Informations sur les activité
     $scope.myActivity = [
@@ -41,8 +40,6 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
         {images: 'chateau_tarriquet.jpg',
             nom: 'Tariquet'}
     ];
-    
-    var parDefaut = ['nom','prenom','','ville','motdepasse','votre@email.com'];
     
     // Niveau de connaissance
     $scope.radioData = [
@@ -82,68 +79,72 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
       };
     */
    
-    // Initialisation avec valeur par défaut
-    $scope.nom = parDefaut[0];
-    $scope.prenom = parDefaut[1];
-    $scope.age = parDefaut[2];
-    $scope.ville = parDefaut[3];
-    $scope.password = parDefaut[4];
-    $scope.email = parDefaut[5];
-    
     $scope.selectedCheckbox = true;
     
     $scope.selected =function(){
       $scope.selectedCheckbox = !$scope.selectedCheckbox;
+      console.log(this.selectedCheckbox);
     };
     
+    var url = 'https://toulouse-so-wine.firebaseio.com/';
     // Instanciation de Firebase + url base de donnée
-    var ref = new Firebase('https://toulouse-so-wine.firebaseio.com/');
-    
+    var baseRef = new Firebase(url);
+    // Table Adhérents
+    var ref = new Firebase(url + 'adherents');
     // Objet tableau d'utilisateur auquel on passe le lien vers la base en argument 
-    var users = $firebaseArray(ref);
-    
+    $scope.users = $firebaseArray(ref);
     // Fonction qui va créer notre utilisateur dans la base
     // On creer un nouvelle utilisateur est on récupere 
     // les informations associés 
     $scope.addUsers = function(){
-    ref.createUser({
-        email    : $scope.email,
-        password : $scope.password
-        }, 
-        function(error, userData) {
-        if (error) 
-        {
-            console.log("Error creating user:", error);
-            alert("Error creation");
-        } 
-        else 
-        {
-           console.log("Successfully created user account with uid:", userData.uid);
-           var niveau = $scope.niveau[0];
-           var typeVin = $scope.types_preferer;
-           alert("Succes creation  " + niveau);
-           // Si le compte se créer sans problème on enregistre les données dans la base
-           users.$add({
-            adherents: {
+        ref.createUser({
+            email    : $scope.email,
+            password : $scope.password
+            }, 
+            function(error, userData) {
+            if (error) 
+            {
+                console.log("Error creating user:", error);
+                console.log("Error creation");
+            } 
+            else 
+            {
+                console.log("Successfully created user account with uid:", userData.uid);
+
+                var niveau = $scope.niveau[0];
+                var typeVin = $scope.types_preferer;
+                var dateNaissance = formatDate($scope.dateN);
+
+                // Si le compte se créer sans problème on enregistre les données dans la base
+                $scope.users.$add({
                     id: userData.uid,
                     nom: $scope.nom,
                     prenom: $scope.prenom,
-                    dateDeNaissance: $scope.age,
+                    dateDeNaissance: dateNaissance,
                     ville: $scope.ville,
                     email:$scope.email,
-                    password : $scope.password
-            },
-               niveau_de_connaissance : niveau,
-               preferences : typeVin
-          });
+                    password : $scope.password,
+                    niveau_de_connaissance : niveau,
+                    preferences : typeVin
+                });
+                getStatus();
+            }
 
-        }
-
-     });
+        });
     };
 
+    function formatDate(dn){
+        var y = dn.getFullYear().toString();
+        var m = dn.getMonth().toString();
+        var d = dn.getDate().toString();
+        
+        var format = d + '/' + m + '/' + y;
+        return format;
+    }
+    
     // Fonction qui va servir à authentifier un utilisateur
     $scope.userLogin = function(){
+        //alert("fonction userLogin");
         ref.authWithPassword({
             email    : $scope.email,
             password : $scope.password
@@ -152,23 +153,84 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
                     if (error) // Si l'utilisateur n'existe pas une erreur est déclencher
                     {
                       console.log("Login Failed!", error);
-                      alert("Vous n'etes pas inscrit!");
+                      //alert("Vous n'etes pas inscrit!");
                     } 
                     else // Sinon ce dernier est logger
                     {
                       console.log("Authenticated successfully with payload:", authData);
-                      alert("Succes login");
+                      //alert("Succes login");
+                      
+                      document.location.reload(true);
+                      
+                      getStatus();                      
                     }
             }
         );
+        
+    };
+
+    var getStatus = function(cbLoggedFB){
+        // On essai de récuperer l'id du visiteur en ligne
+        var authData = ref.getAuth();
+        //console.log(authData.token);
+        console.log(authData);
+        if (authData !== null) {
+            
+            console.log("Logged in as:", authData.uid);
+            console.log(authData.provider);
+            ref.once("value", function(snapshot){
+                snapshot.forEach(function(snap){
+                    var uid = snap.child('id').val();
+                    console.log(uid);
+                    if (authData.uid === uid){
+                        ref.onAuth(cbAuth);
+                        
+                        $scope.isVisible = false; 
+                        console.log($scope.isVisible);
+                    }
+
+                });
+            });
+
+        } else {
+            
+            if(cbLoggedFB === true){
+                $scope.isVisible = false; 
+                document.location.reload(true);
+            }
+            else{
+                $scope.completeInfo = false;
+                console.log("Logged out");
+                $scope.isVisible = true; 
+            }
+        }
+        
     };
     
+    getStatus();
+    
+    var cbAuth = (function(authData) {
+        if (authData) {
+          console.log("Authenticated with uid:", authData.uid);
+        } else {
+          console.log("Client unauthenticated.");
+          $scope.isVisible = true;
+        }
+      });
+
+    $scope.logout = function(){
+        ref.offAuth(cbAuth);
+        document.location.reload(true);
+        ref.unauth();
+        getStatus();
+        console.log('Déconnecter');
+    };
     /////////////////////////////////////
     /////       FACBOOK LOGIN       /////
     /////////////////////////////////////
-
+    /*
     // Initialisation de l'API
-    $window.fbAsyncInit = function() {
+    window.fbAsyncInit = function() {
       FB.init({
         appId      : '788769794573763',
         status     : true,
@@ -187,33 +249,55 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
        js.src = "//connect.facebook.net/fr_FR/sdk.js";
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
-    
+    */
     ////////////////////////////////////////
-
-    $scope.login = function() {
+  
+    
+    $scope.login = function(cbLoggedFB) {
         ref.authWithOAuthPopup("facebook", function(error, authData) {
             //authData.facebook.id+' // '+authData.facebook.email);
             
+          $scope.completeInfo = true;            
           if (error) {
                 console.log("Login Failed!", error);
+                cbLoggedFB = false;
+                $scope.completeInfo = cbLoggedFB;
+                
           } else {
               //alert(authData.facebook.cachedUserProfile.last_name);
                 // the access token will allow us to make Open Graph API calls
                 console.log(authData.facebook.accessToken); 
-                users.$add({
-                 adherents: {
-                         id: authData.uid,
-                         nom: authData.facebook.cachedUserProfile.last_name,
-                         prenom: authData.facebook.cachedUserProfile.first_name,
-                         email:authData.facebook.email
-                 }
-               });
+                cbLoggedFB = true;
+                
+                $scope.FBnom = authData.facebook.cachedUserProfile.last_name;
+                $scope.FBprenom = authData.facebook.cachedUserProfile.first_name;
+                $scope.prenom = $scope.FBprenom;
+                $scope.nom = $scope.FBnom;
+                $scope.email = authData.facebook.email;
+                //cbLoggedFB = selected();
+                
+                if($scope.selectedCheckbox === false){
+                    getStatus(cbLoggedFB);
+                    
+                    
+                    $scope.users.$add({
+                        id: authData.uid,
+                        nom: $scope.FBnom,
+                        prenom: $scope.FBprenom,
+                        email: authData.facebook.email,
+                        dateDeNaissance: $scope.dateN,
+                        ville: $scope.ville,
+                        password: $scope.password
+                   });
+               }
+               
           }
         }, {
           scope: "email,user_likes,public_profile" // the permissions requested
-        });        
+        });   
+        
     };
-    
+
    
     
     /*
@@ -222,6 +306,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
                  data-size="medium" 
                  data-show-faces="false" 
                  data-auto-logout-link="true"></div>*/
+/* 
     /////////////////////////////////////
     /////        MEETUP API         /////
     /////////////////////////////////////
@@ -246,7 +331,6 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
             $scope.status = status;
         });
     };    
-/* 
 
 var test = {
     "results":
