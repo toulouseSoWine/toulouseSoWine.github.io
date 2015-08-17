@@ -421,18 +421,14 @@
                     <h4 class="modal-title">S'incrire</h4>
                 </div>
                 
-                <form ng-submit="addUsers()" class="form-horizontal" name="myForm">
+                <form ng-submit="valid()" class="form-horizontal" name="myForm">
                 <div class="modal-body">
                     <!-- The form is placed inside the body of modal -->
                     
                         
                         <md-grid-list>
                         
-                            <div ng-show="{{completeInfo}}" class="text-center">
-                                <h4 ng-model="FBprenom">Bienvenue {{FBprenom}} {{FBnom}}</h4><br>
-                                <p>Pour terminer l'inscription veuillez remplir les champs requis ! (*)</p>
-                            </div>
-                            <div ng-hide="{{completeInfo}}">
+                            
                             <md-input-container>
                                 <label>Nom</label>
                                 <input type="text"
@@ -464,13 +460,13 @@
                                        ng-model="email"
                                        ng-required="true">
                             </md-input-container>
-                            </div>
+                           
                             <md-input-container>
                                 <label>Date de naissance</label>
                                 <input type="date"
                                        name="Ndate" 
                                        ng-model="dateN"
-                                       ng-required="true">
+                                       ng-required="{{fbRequis}}">
                             </md-input-container>
                        
                         
@@ -481,7 +477,7 @@
                                        ng-maxlength="25"
                                        name="Nville" 
                                        ng-model="ville"
-                                       ng-required="true">
+                                       ng-required="{{fbRequis}}">
                             </md-input-container>
                             
                             <md-input-container>
@@ -491,13 +487,13 @@
                                        ng-maxlength="15"
                                        name="Npass" 
                                        ng-model="password"
-                                       ng-required="true">
+                                       ng-required="{{fbRequis}}">
                             </md-input-container>
                            
                             
                             <br>
                             
-                            <p>* Comment estime-tu ton niveau de connaissance des vins?</p>
+                            <p>Comment estime-tu ton niveau de connaissance des vins? *</p>
                             <div layout="column" layout-wrap>
                                 <md-radio-group class="md-primary">
                                     <md-radio-button ng-repeat="n in radioData" ng-value="n.value" ng-click="toggle(n.value,niveau)">
@@ -507,7 +503,7 @@
                             </div>
                             <br>
                             
-                            <p>Quel types de vins aimes-tu?</p>
+                            <p>Quel types de vins aimes-tu? *</p>
                             <div flex="50" flex-md="100" layout="column">
                               <fieldset class="standard" flex>
                                 <div layout="row" layout-wrap>

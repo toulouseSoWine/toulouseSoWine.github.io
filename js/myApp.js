@@ -11,8 +11,8 @@
 var app = angular.module('myApp',['ngMaterial','ngMessages','firebase']);
 
   
-app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
-    function($scope,$firebaseArray,$firebaseAuth,$http){
+app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http","$templateCache",
+    function($scope,$firebaseArray,$firebaseAuth,$http,$templateCache){
     
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['myApp']);
@@ -20,25 +20,31 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
     
     // Informations sur les activité
     $scope.myActivity = [
-        {images: 'degustation.jpg',
+        {   images: 'degustation.jpg',
             titre: 'Initiation à la dégustation', 
-            description: 'Dégustation dans des lieux athipiques de la région toulousaine de 4 à 6 vins du Sud-Ouest.'},
-        {images: 'cepage.jpg',
+            description: 'Dégustation dans des lieux athipiques de la région toulousaine de 4 à 6 vins du Sud-Ouest.'
+        },
+        {   images: 'cepage.jpg',
             titre: 'Découverte des cépages', 
-            description: 'Des moments sous le signe de la convivialité, pour découvrir les secrets aromatiques...'},
-        {images: 'accord.png',
+            description: 'Des moments sous le signe de la convivialité, pour découvrir les secrets aromatiques...'
+        },
+        {   images: 'accord.png',
             titre: 'Accord Mets & Vins', 
-            description: 'Pour prolonger le plaisir de nos évènements avec vos amis, vous pouvez achetez à prix ...'}
+            description: 'Pour prolonger le plaisir de nos évènements avec vos amis, vous pouvez achetez à prix ...'
+        }
     ];
     
     // Informations sur les partenaires
     $scope.myPartenaire = [
-        {images: 'Chateau JOLIET - Vin Rouge - Negrette.jpg',
-            nom: 'Joliet'},
-        {images: 'cransac-blanc-renaiisance.jpg',
-            nom: 'Cransac'},
-        {images: 'chateau_tarriquet.jpg',
-            nom: 'Tariquet'}
+        {   images: 'Chateau JOLIET - Vin Rouge - Negrette.jpg',
+            nom: 'Joliet'
+        },
+        {   images: 'cransac-blanc-renaiisance.jpg',
+            nom: 'Cransac'
+        },
+        {   images: 'chateau_tarriquet.jpg',
+            nom: 'Tariquet'
+        }
     ];
     
     // Niveau de connaissance
@@ -62,14 +68,15 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
     ];
     
     $scope.types_preferer = [];
-      $scope.toggle = function (item, list) {
+    $scope.toggle = function (item, list) {
         var idx = list.indexOf(item);
         if (idx > -1) list.splice(idx, 1);
         else list.push(item);
-      };
-      $scope.exists = function (item, list) {
+    };
+    
+    $scope.exists = function (item, list) {
         return list.indexOf(item) > -1;
-      };
+    };
     /*  
       $scope.test = function(){
         for(var i =0; i < $scope.selected.length; i++){
@@ -96,7 +103,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
     // Fonction qui va créer notre utilisateur dans la base
     // On creer un nouvelle utilisateur est on récupere 
     // les informations associés 
-    $scope.addUsers = function(){
+    var addUsers = function(){
         ref.createUser({
             email    : $scope.email,
             password : $scope.password
@@ -126,7 +133,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
                     password : $scope.password,
                     niveau_de_connaissance : niveau,
                     preferences : typeVin
-                });
+                });                     
+                
+                
+                
+                document.location.reload(true);
+
                 getStatus();
             }
 
@@ -173,22 +185,35 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
         // On essai de récuperer l'id du visiteur en ligne
         var authData = ref.getAuth();
         //console.log(authData.token);
-        console.log(authData);
+        //console.log(authData);
         if (authData !== null) {
             
             console.log("Logged in as:", authData.uid);
             console.log(authData.provider);
             ref.once("value", function(snapshot){
                 snapshot.forEach(function(snap){
+                    // On vérifie que certain champs de notre table existe dans notre base 
+                    // avant de certifié qu'un utilisateur est adhérent 
                     var uid = snap.child('id').val();
+                    var fbtoken = snap.child('fbtoken').val();
+                    
+                    console.log(authData);
                     console.log(uid);
-                    if (authData.uid === uid){
-                        ref.onAuth(cbAuth);
-                        
-                        $scope.isVisible = false; 
-                        console.log($scope.isVisible);
+                    console.log(fbtoken);
+                    if(authData.provider === 'facebook'){
+                        if(authData.token === fbtoken){
+                            ref.onAuth(cbAuth);
+                            $scope.isVisible = false;
+                            console.log("false"); 
+                        }
                     }
-
+                    else{
+                        if (authData.uid === uid){
+                            ref.onAuth(cbAuth);
+                            $scope.isVisible = false;
+                            console.log("false");
+                        }
+                    }
                 });
             });
 
@@ -199,8 +224,9 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
                 document.location.reload(true);
             }
             else{
+                
                 $scope.completeInfo = false;
-                console.log("Logged out");
+                //console.log("Logged out");
                 $scope.isVisible = true; 
             }
         }
@@ -224,6 +250,34 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
         ref.unauth();
         getStatus();
         console.log('Déconnecter');
+    };
+    
+    $scope.valid = function (){
+        var authData = ref.getAuth();
+        if(authData.provider === 'facebook'){
+            console.log('facebook');
+            var niveau = $scope.niveau[0];
+            var typeVin = $scope.types_preferer;
+            var dateNaissance = formatDate($scope.dateN);
+            // Si le compte se créer sans problème on enregistre les données dans la base
+            $scope.users.$add({
+                id: authData.uid,
+                nom: $scope.nom,
+                prenom: $scope.prenom,
+                dateDeNaissance: dateNaissance,
+                ville: $scope.ville,
+                email:$scope.email,
+                password : $scope.password,
+                niveau_de_connaissance : niveau,
+                preferences : typeVin,
+                fbToken : authData.token
+            });    
+            document.location.reload(true);
+        }
+        else{
+            console.log('addUser()');
+            addUsers();
+        }
     };
     /////////////////////////////////////
     /////       FACBOOK LOGIN       /////
@@ -267,29 +321,15 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
               //alert(authData.facebook.cachedUserProfile.last_name);
                 // the access token will allow us to make Open Graph API calls
                 console.log(authData.facebook.accessToken); 
-                cbLoggedFB = true;
+                
+                //cbLoggedFB = true;
                 
                 $scope.FBnom = authData.facebook.cachedUserProfile.last_name;
                 $scope.FBprenom = authData.facebook.cachedUserProfile.first_name;
+                
                 $scope.prenom = $scope.FBprenom;
                 $scope.nom = $scope.FBnom;
                 $scope.email = authData.facebook.email;
-                //cbLoggedFB = selected();
-                
-                if($scope.selectedCheckbox === false){
-                    getStatus(cbLoggedFB);
-                    
-                    
-                    $scope.users.$add({
-                        id: authData.uid,
-                        nom: $scope.FBnom,
-                        prenom: $scope.FBprenom,
-                        email: authData.facebook.email,
-                        dateDeNaissance: $scope.dateN,
-                        ville: $scope.ville,
-                        password: $scope.password
-                   });
-               }
                
           }
         }, {
@@ -298,40 +338,25 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http",
         
     };
 
-   
-    
-    /*
-            <div class="fb-login-button" 
-                 data-max-rows="1" 
-                 data-size="medium" 
-                 data-show-faces="false" 
-                 data-auto-logout-link="true"></div>*/
-/* 
+
     /////////////////////////////////////
     /////        MEETUP API         /////
     /////////////////////////////////////
+    
    // MeetUp API url utiliser pour recevoir les données sous format JSON
-    $scope.meetupURL = 
+    var meetupURL = 
             'https://api.meetup.com/2/events?&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
     
-    // On définit la méthode qui nous permettra de récuperer les info de l'événements
-    $scope.methode = 'JSONP';
+    var test = $http.jsonp(meetupURL).then(function(data,status){
+        console.log('data + status' + data + status);
+    });
     
-    $scope.fetch = function() {
-        $scope.code = null;
-        $scope.response = null;
+    console.log('$http.jsonp test = '+test);
+    console.log(angular.fromJson(test));
+     
 
-        $http({method: GET, url: $scope.meetupURL, cache: $templateCache}).
-          success(function(response, status) {
-            $scope.status = status;
-            $scope.data = response;
-          }).
-          error(function(data, status) {
-            $scope.data = data || "Request failed";
-            $scope.status = status;
-        });
-    };    
-
+    
+/*
 var test = {
     "results":
         [
