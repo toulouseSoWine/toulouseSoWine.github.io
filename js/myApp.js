@@ -8,11 +8,10 @@
 
 //Helvetica Light!
 
-var app = angular.module('myApp',['ngMaterial','ngMessages','firebase']);
+var app = angular.module('myApp',['ngSanitize','ngMaterial','ngMessages','firebase']);
 
-  
-app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http","$templateCache",
-    function($scope,$firebaseArray,$firebaseAuth,$http,$templateCache){
+app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
+    function($scope,$firebaseArray,$http,$window){
     
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['myApp']);
@@ -344,97 +343,21 @@ app.controller("myCtrl",["$scope","$firebaseArray","$firebaseAuth","$http","$tem
     /////////////////////////////////////
     
    // MeetUp API url utiliser pour recevoir les données sous format JSON
-    var meetupURL = 
-            'https://api.meetup.com/2/events?&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
-    
-    var test = $http.jsonp(meetupURL).then(function(data,status){
-        console.log('data + status' + data + status);
-    });
-    
-    console.log('$http.jsonp test = '+test);
-    console.log(angular.fromJson(test));
-     
 
+    //Vous devez spécifier un paramètre de rappel dans votre URL qui sera 
+    //le même que le nom de la fonction qui sera utilisée pour traiter les données renvoyées.
+   var url = 
+            'https://api.meetup.com/2/events?callback=apiCallback&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
+   
+    // Pour que le Callback fonctionne cette ligne est obligatoire
+    var parse = $http.jsonp(url);
     
-/*
-var test = {
-    "results":
-        [
-            {
-                "utc_offset":7200000,
-                "venue":
-                        {
-                            "country":"fr",
-                            "city":"Ramonville Saint Agne",                
-                            "address_1":"69 chemin du mange pomme",
-                            "name":"Ferme de Cinquante",
-                            "lon":1.490732,
-                            "id":23913210,
-                            "lat":43.544949,
-                            "repinned":false
-                        },
-                "headcount":0,
-                "visibility":"public",
-                "waitlist_count":0,
-                "created":1438674851000,
-                "fee":
-                        {
-                            "amount":10,
-                            "accepts":"cash",
-                            "description":"par personne",
-                            "currency":"EUR",
-                            "label":"Tarifs",
-                            "required":"0"
-                        },
-                "maybe_rsvp_count":0,
-                "description":"<p><img src=\"http:\/\/photos1.meetupstatic.com\/photos\/event\/5\/e\/0\/c\/600_440544076.jpeg\" \/><\/p> <p>A l'occasion de la coupe du monde, ToulouseSoWine se met aux couleurs du Rugby.<\/p> <p>Venez participer au coup d'envoi par un barbecue haut en couleurs.<br\/>Du blanc au rouge, éveillez vos sens en vous amusant. <br\/>Et transformez l'essai devant les matchs ou lors de la foire aux vins d'automne.<\/p> <p>Paiement via Payname ou sur place (pour un soucis d'organisation : inscription obligatoire)<\/p>","event_url":"http:\/\/www.meetup.com\/ToulouseSoWine\/events\/224394676\/",
-                "yes_rsvp_count":2,
-                "duration":10800000,
-                "announced":true,
-                "name":"BBQ aux couleurs du Rugby",
-                "id":"224394676",
-                "time":1441445400000,
-                "updated":1438674851000,
-                "group":
-                        {
-                            "join_mode":"open",
-                            "created":1434748611000,
-                            "name":"ToulouseSoWine",
-                            "group_lon":1.4500000476837158,
-                            "id":18685076,
-                            "urlname":"ToulouseSoWine",
-                            "group_lat":43.619998931884766,
-                            "who":"amateurs toulousains"
-                        },
-                        "status":"upcoming"
-            }
-        ],
-    "meta":{
-        "next":"",
-        "method":"Events",
-        "total_count":1,
-        "link":"https:\/\/api.meetup.com\/2\/events",
-        "count":1,
-        "description":"Access Meetup events using a group, member, or event id. Events in private groups are available only to authenticated members of those groups. To search events by topic or location, see [Open Events](\/meetup_api\/docs\/2\/open_events).",
-        "lon":"",
-        "title":"Meetup Events v2",
-        "url":"https:\/\/api.meetup.com\/2\/events?offset=0&sign=True&format=json&limited_events=False&group_urlname=ToulouseSoWine&photo-host=public&page=20&fields=&key=271548165724ccf206a342412621&order=time&desc=false&status=upcoming",
-        "signed_url":"https:\/\/api.meetup.com\/2\/events?offset=0&format=json&limited_events=False&group_urlname=ToulouseSoWine&photo-host=public&page=20&fields=&order=time&desc=false&status=upcoming&sig_id=112254972&sig=a014967ce1f6f9570f492fe177857ef503dc3ce5",
-        "id":"",
-        "updated":1438674851000,
-        "lat":""
-        }
+    //console.log(angular.fromJson(test));
+
+    // Callback pour le récuperation des données
+    $window.apiCallback = function(data) {
+        console.log(data.results[0]); 
     };
-        
-        $scope.resultat = [
-            angular.fromJson(test.results[0]),
-            angular.fromJson(test.results)
-        ];
-        alert($scope.resultat[0].venue.city +
-                $scope.resultat[0].venue.name +
-                $scope.resultat[0].name
-                );
-        $scope.testjson = $scope.resultat[0].description;
-        */
+
 }]);
 
