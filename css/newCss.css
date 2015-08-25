@@ -1,0 +1,227 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19 août 2015, 15:05:40
+    Author     : Responsable
+*/
+
+// Desktop
+
+p{
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.onCarousel{
+  font-size:40px;
+   position:absolute;
+   z-index:1;
+   color:#fff;
+   top:300px;
+   text-align:center;
+   width:100%;
+}
+
+.myTxt{
+    color : white;
+    text-align: center;
+    text-justify: auto;
+    font-family: 'Roboto', sans-serif;
+    font-size: 60px;
+    font-style: italic;
+}
+
+.navbar-default.navbar-shrink {
+    padding: 10px 0;
+    background-color: #fff;
+}
+
+.myLogo{
+    padding-top: 12px;
+    padding-left: 5px;
+    padding-bottom: 4px;
+    width: 170px; 
+    height: 45px;
+} 
+
+.carousel-inner>.item>img{
+    position: absolute;
+    height: auto;
+    width: auto;    
+}
+
+.thumbnail{
+    max-height: 490px;
+    max-width: 290px;
+}
+
+.thumbnail>.caption>h3,
+.thumbnail>.caption>p{
+    font-family: 'Roboto', sans-serif;
+    text-justify: auto;
+}
+
+.owl-item .item{
+    max-height: 300px;
+    max-width: 160px;
+}
+
+.myCursor{
+    cursor: pointer;
+}
+
+.myCursor:hover{
+    color: #EC3D93;
+}
+
+#myBtnFB{
+    background-color: #3b5998;
+    border: 1px solid #25385f;
+    border-radius: 5px;
+    color: white;
+    max-height: 92px;
+}
+
+#myBtn{
+    color: #EC3D93;
+    border: 1px solid #EC3D93;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+#myBtn:hover{
+    color: #fff;
+    border-radius: 5px;
+    background-color: #EC3D93;
+}
+
+#imgSize{
+	max-width: 60%;
+}
+
+.mySize{
+	width: 80%;
+}
+
+.myRightPos{
+    float: right;
+    position: relative;
+}
+
+.myLeftPos{
+    float: left;
+    position: relative;
+}
+
+.myHeadForm{
+    color: white;
+    background-color: rgba(252, 0, 76, 0.6);
+}
+
+.myLigne{
+    height: 1px;
+    max-width: 100%;
+    background-color: #EC3D93;
+}
+
+.hover-bg .hover-text{
+    max-height: 300px;
+    max-width: 160px;
+}
+
+.my-slide-frame {
+  position:relative;
+  min-height:240px;
+  overflow:hidden;
+}
+
+.my-slide-frame > div {
+  width:100%;
+}
+
+/* modal and step animations */
+.wave.ng-enter, .wave.ng-leave {
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
+}
+
+.wave.ng-enter {
+  position: absolute;
+  right:-100%;
+}
+
+.wave.ng-enter-active {
+  left:0;
+}
+
+.wave.ng-leave {
+  position: absolute;
+  right:0;
+}
+
+.wave.ng-leave-active {
+  right:100%;
+}
+
+@media (min-width : 768px){
+    .navbar-default{
+        background-color: white;
+    }
+    .navbar-default>.navbar-nav{
+        max-width: 750px;
+    }
+}
+
+@media (max-width : 768px){
+    .onCarousel{
+      font-size:30px;
+    }    
+
+    .carousel-inner>.item{
+        max-width: 770px;
+    }
+    
+    .carousel-inner>.item>img{
+        width: auto;
+        height: auto;
+    }    
+}
+
+@media (max-width : 420px){
+    .onCarousel{
+      font-size:20px;
+    }
+    .carousel-inner>.item{
+        max-width: 500px;
+    }    
+	
+	#imgSize{
+		max-width: 40%;
+	} 
+}
+
+@media (max-width : 360px){
+    .onCarousel{
+      font-size:15px;
+    }
+    .carousel-inner>.item{
+        max-width: 400px;
+    }  
+    .mySize{
+        max-width: 260px;
+    }    
+	
+	#imgSize{
+		max-width: 30%;
+	}
+}
+
+
+
+
+

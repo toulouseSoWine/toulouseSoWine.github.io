@@ -26,7 +26,7 @@ p{
     background-color: #EC3D93;
 }
 
-#myRightPos{
+.myRightPos{
     float: right;
     position: relative;
 }
@@ -122,3 +122,4 @@ p{
 .infoConso{
     font-size: 10px;
 }
+

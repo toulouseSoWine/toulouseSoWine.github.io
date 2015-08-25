@@ -8,14 +8,16 @@
 
 //Helvetica Light!
 
-var app = angular.module('myApp',['ngSanitize','ngMaterial','ngMessages','firebase']);
+var app = angular.module('myApp',['ngMaterial','ngMessages','firebase','ngSanitize','mgo-angular-wizard']);
 
+angular.element(document).ready(function() {
+    angular.bootstrap(document, ['myApp']);
+});  
+        
 app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     function($scope,$firebaseArray,$http,$window){
     
-    angular.element(document).ready(function() {
-        angular.bootstrap(document, ['myApp']);
-    });   
+ 
     
     // Informations sur les activité
     $scope.myActivity = [
@@ -48,10 +50,10 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
     // Niveau de connaissance
     $scope.radioData = [
-        { value: 'Néophite'},
-        { value: 'Amateur'},
-        { value: 'Passionné'},
-        { value: 'Professionnel'}
+        { value: 'Ne sais pas choisir son vin'},
+        { value: 'Amateur néophite'},
+        { value: 'Amateur éclairé'},
+        { value: 'Professionnel du vin'}
        ];
     
     $scope.niveau = [];
@@ -131,7 +133,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                     email:$scope.email,
                     password : $scope.password,
                     niveau_de_connaissance : niveau,
-                    preferences : typeVin
+                    preferences : typeVin,
+                    connectWith : userData.provider
                 });                     
                 
                 
@@ -186,7 +189,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         //console.log(authData.token);
         //console.log(authData);
         if (authData !== null) {
-            
+            console.log(authData);
             console.log("Logged in as:", authData.uid);
             console.log(authData.provider);
             ref.once("value", function(snapshot){
@@ -234,78 +237,59 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
     getStatus();
     
-    var cbAuth = (function(authData) {
+    var cbAuth = function(authData) {
         if (authData) {
           console.log("Authenticated with uid:", authData.uid);
         } else {
           console.log("Client unauthenticated.");
           $scope.isVisible = true;
         }
-      });
+      };
 
     $scope.logout = function(){
         ref.offAuth(cbAuth);
-        document.location.reload(true);
         ref.unauth();
+        document.location.reload(true);
         getStatus();
         console.log('Déconnecter');
     };
     
     $scope.valid = function (){
         var authData = ref.getAuth();
-        if(authData.provider === 'facebook'){
-            console.log('facebook');
-            var niveau = $scope.niveau[0];
-            var typeVin = $scope.types_preferer;
-            var dateNaissance = formatDate($scope.dateN);
-            // Si le compte se créer sans problème on enregistre les données dans la base
-            $scope.users.$add({
-                id: authData.uid,
-                nom: $scope.nom,
-                prenom: $scope.prenom,
-                dateDeNaissance: dateNaissance,
-                ville: $scope.ville,
-                email:$scope.email,
-                password : $scope.password,
-                niveau_de_connaissance : niveau,
-                preferences : typeVin,
-                fbToken : authData.token
-            });    
-            document.location.reload(true);
+        if(authData)
+        {
+            if(authData.provider !== 'password'){
+                console.log('facebook');
+                var niveau = $scope.niveau[0];
+                var typeVin = $scope.types_preferer;
+                var dateNaissance = formatDate($scope.dateN);
+                // Si le compte se créer sans problème on enregistre les données dans la base
+                $scope.users.$add({
+                    id: authData.uid,
+                    nom: $scope.nom,
+                    prenom: $scope.prenom,
+                    dateDeNaissance: dateNaissance,
+                    ville: $scope.ville,
+                    email:$scope.email,
+                    password : $scope.password,
+                    niveau_de_connaissance : niveau,
+                    preferences : typeVin,
+                    connectWith : authData.provider
+                });    
+                document.location.reload(true);
+            }
         }
         else{
             console.log('addUser()');
             addUsers();
         }
     };
+    
     /////////////////////////////////////
     /////       FACBOOK LOGIN       /////
     /////////////////////////////////////
-    /*
-    // Initialisation de l'API
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '788769794573763',
-        status     : true,
-        cookie     : true,
-        xfbml      : true,
-        oauth      : true,
-        version    : 'v2.4'
-      });
-    };
-    
-    // Chargement du SDK asynchrone
-    (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/fr_FR/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
-    */
-    ////////////////////////////////////////
-  
-    
+
+      
     $scope.login = function(cbLoggedFB) {
         ref.authWithOAuthPopup("facebook", function(error, authData) {
             //authData.facebook.id+' // '+authData.facebook.email);
@@ -319,7 +303,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
           } else {
               //alert(authData.facebook.cachedUserProfile.last_name);
                 // the access token will allow us to make Open Graph API calls
-                console.log(authData.facebook.accessToken); 
+                console.log(authData); 
                 
                 //cbLoggedFB = true;
                 
@@ -346,18 +330,25 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
     //Vous devez spécifier un paramètre de rappel dans votre URL qui sera 
     //le même que le nom de la fonction qui sera utilisée pour traiter les données renvoyées.
-   var url = 
+    var url = 
             'https://api.meetup.com/2/events?callback=apiCallback&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
    
     // Pour que le Callback fonctionne cette ligne est obligatoire
-    var parse = $http.jsonp(url);
-    
+    var json = $http.jsonp(url);
+    $scope.myEvent;
     //console.log(angular.fromJson(test));
-
+    
+    // Callback pour le récuperation des données
+    $window.apiCallback = function(json) {
+        console.log(json.results[0].description);
+        $scope.myEvent = json.results[0].description;
+    };
+    /*
     // Callback pour le récuperation des données
     $window.apiCallback = function(data) {
-        console.log(data.results[0]); 
-    };
+        console.log(data.results[0].description);
+        $scope.myEvent = data.results[0].description;
+    };*/
 
 }]);
 
