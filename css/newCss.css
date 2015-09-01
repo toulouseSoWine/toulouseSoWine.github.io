@@ -168,6 +168,25 @@ p{
   right:100%;
 }
 
+#missingInfo{
+	position: fixed;
+	/*float: left;*/
+	margin-top: 100px;
+	width: 100px;
+	heigth: 100px;
+}
+
+.tSize{
+	float:left;
+	width: 80px;
+	height: 60px;	
+}
+
+md-input-container label, md-input-container .md-placeholder {
+	color: #000;
+}
+
+/*
 @media (min-width : 768px){
     .navbar-default{
         background-color: white;
@@ -215,12 +234,8 @@ p{
     .mySize{
         max-width: 260px;
     }    
-	
-	#imgSize{
-		max-width: 30%;
-	}
 }
-
+*/
 
 
 

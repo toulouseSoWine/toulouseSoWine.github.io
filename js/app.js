@@ -18,6 +18,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     var url = 'https://toulouse-so-wine.firebaseio.com/adherents';
     var ref = new Firebase(url);
     $scope.users = $firebaseArray(ref);
+    
   
     function formatDate(dn){
     	dn = new Date();
@@ -98,15 +99,14 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         }
 
     };
-
-
-    $scope.create = function(){
+    
+     $scope.create = function(){
         ref.createUser({
-            email    : $scope.email,
-            password : $scope.password
+            email    : info[2],
+            password : info[3]
             }, 
             function(error, userData) {
-        console.log("data :", userData);
+            	console.log("data :", userData);
             if (error) 
             {
                 console.log("Error creating user:", error);
@@ -118,19 +118,19 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
                 var niveau = $scope.niveau[0];
                 var typeVin = $scope.types_preferer;
-                var dateNaissance = formatDate($scope.dateN);
+                var dateNaissance = formatDate(infos[4]);
                 
                 // Si le compte se créer sans problème on enregistre les données dans la base
                 $scope.users.$add({
                     id: userData.uid,
-                    nom: $scope.nom,
-                    prenom: $scope.prenom,
+                    nom: info[0],
+                    prenom: info[1],
                     dateDeNaissance: dateNaissance,
-                    ville: $scope.ville,
-                    email:$scope.email,
-                    password : $scope.password,
-                    niveau_de_connaissance : niveau,
-                    preferences : typeVin,
+                    ville: info[5],
+                    email: info[2],
+                    password : info[3],
+                    niveau_de_connaissance : niveau || 'null',
+                    preferences : typeVin || 'null',
                     connectWith : 'firebase'
                 }); 
                 
@@ -182,11 +182,33 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         console.log('Déconnecter');
     };
     
+    var infos = [];
+    
+    var addUsers = function(){
+    	
+    	alert('function addUsers');
+		 infos.push($scope.nom);
+		 infos.push($scope.prenom);
+		 infos.push($scope.email);
+		 infos.push($scope.password);
+		 infos.push($scope.dateNaissance);
+		 infos.push($scope.ville);
+    	
+    	console.log('infos : ' + infos);
+    	for(var i = 0; i < infos.length; i++){
+    		if(infos[i] === ''){
+    			console.log('Erreur enregistrement des données');
+    		}
+    		else{
+    			$scope.handleNext();		
+    		}
+    	}
+    	  	
+    };
     /////////////////////////////////////
     /////       FACBOOK LOGIN       /////
     /////////////////////////////////////
 
-    $scope.cbLogin = false;
     
     $scope.login = function() {
         ref.authWithOAuthPopup("facebook", function(error, authData) {
@@ -199,50 +221,69 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                 // the access token will allow us to make Open Graph API calls
                 console.log(authData); 
                 
+                var typeVin = $scope.types_preferer;
                 
+                $scope.fid = authData.uid;
                 $scope.FBnom = authData.facebook.cachedUserProfile.last_name;
                 $scope.FBprenom = authData.facebook.cachedUserProfile.first_name;
-                
-                $scope.prenom = $scope.FBprenom;
-                $scope.nom = $scope.FBnom;
+                $scope.FBdate = authData.facebook.cachedUserProfile.birthday;
                 $scope.email = authData.facebook.email;
+                
+    			$scope.users.$add({
+    			    id: $scope.fid,
+    			    nom: $scope.FBnom,
+    			    prenom: $scope.FBprenom,
+    			    email: $scope.email,
+    			    connectWith : 'facebook',
+				    dateDeNaissance: $scope.FBdate,
+				    niveau_de_connaissance : $scope.niveau[0] || 'null',
+				    preferences : $scope.types_preferer || 'null'
+    			}); 
                
           }
         }, {
-          scope: "email,user_likes,public_profile" // the permissions requested
+          scope: "email,user_likes,public_profile,user_birthday,user_hometown,user_location,user_about_me" // the permissions requested
         });   
         
-        $scope.cbLogin = true;
-        $scope.setCurrentStep(2);
+        $scope.setCurrentStep(1);
     };
 
     $scope.fbLogged = function(){
-    	ref.authWithCustomToken('AUTH_TOKEN', function(authData){
-			var niveau = $scope.niveau[0];
-			var typeVin = $scope.types_preferer;
-			var dateNaissance = formatDate($scope.dateN);
-			    
-			$scope.users.$add({
-			    id: authData.uid,
-			    nom: $scope.nom,
-			    prenom: $scope.prenom,
-			    dateDeNaissance: dateNaissance,
-			    ville: $scope.ville,
-			    email: $scope.email,
-			    niveau_de_connaissance : niveau,
-			    preferences : typeVin,
-			    connectWith : 'facebook'
-			}); 
 		
-    });
+		var auth = ref.getAuth();
+
+		var niveau = $scope.niveau[0];
+		var typeVin = $scope.types_preferer;
+		
+		ref.once('value',function(snapshot){
+			console.log(snapshot);
+			snapshot.forEach(function(snap){
+				console.log(snap);
+			 	var mail = snap.child('email').val();
+                var provider = snap.child('connectWith').val();
+                var uid = snap.child('id').val();
+                	
+                if(auth.provider && provider === 'facebook'){
+                    if(auth.facebook.email === mail && auth.uid === uid){
+      				  
+                    	
+  					    snap.child('niveau_de_connaissance').set(niveau);
+  					    snap.child('preferences').set(typeVin);
+	  					
+                    }
+                }
+			});
+		});
+			
     }
-    // Slide Modal Inscription
-    
+
+ 
+    // Slide Modal Inscription   
     var modal = this;
-
-    modal.steps = ['one', 'two', 'three','four'];
+    
+    modal.steps = ['one', 'two'];
     modal.step = 0;
-
+    
     $scope.isFirstStep = function () {
         return modal.step === 0;
     };
@@ -273,15 +314,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
     $scope.handleNext = function () {
         if ($scope.isLastStep()) {
+        	$scope.create();
         } else {
             modal.step += 1;
         }
     };
-
-    $scope.dismiss = function(reason) {
-        $modalInstance.dismiss(reason);
-    };
-    
+        
     
     $scope.seConnecter = status();
     console.log("se connecter status : "+$scope.seConnecter);
@@ -375,6 +413,9 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
    
     // Pour que le Callback fonctionne cette ligne est obligatoire
     var json = $http.jsonp(url);
+    var tabEvent;
+    $scope.iEvent;
+    //$scope.linkEvent;
     $scope.myEvent;
     //console.log(angular.fromJson(test));
     
@@ -382,8 +423,47 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     $window.apiCallback = function(json) {
         console.log(json.results);
         $scope.myEvent = json.results[0].description;
+        tabEvent = parseDesc(json.results[0].description);
+        $scope.iEvent = tabEvent[0];
+        //$scope.linkEvent = tabEvent[4];
+    };
+    
+     //Retourne l'image de l'evenement seulement
+    function parseDesc(tabDesc){
+    	var start = '<p>';
+    	var end = '</p>';
+    	
+    	var i;
+    	var j;
+    	
+    	var p = [];
+    	var s = '';
+    	
+    	console.log('function parse : ' + tabDesc);
+    	for(i = 0; i < tabDesc.length; i++){
+    		var debut = tabDesc.charAt(i) + tabDesc.charAt(i + 1) + tabDesc.charAt(i + 2);
+    		
+    		if(debut === start){
+    			for(j = i; j < tabDesc.length - 2; j ++){
+    				s += tabDesc.charAt(j);
+    				var fin = tabDesc.charAt(j - 3) + tabDesc.charAt(j - 2) + tabDesc.charAt(j - 1) + tabDesc.charAt(j);
+	    			if(fin === end){
+	    				//s += end;
+	    				p.push(s);
+	    				console.log('s : ' +s);
+
+	    				s = '';
+	    				return p;
+	    			}
+    			}
+    			i = j;
+    		}
+    	} 
+    	console.log(p);
+    	return p;
     };
     /*
+    *
     // Callback pour le récuperation des données
     $window.apiCallback = function(data) {
         console.log(data.results[0].description);
@@ -391,4 +471,3 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     };*/
 
 }]);
-

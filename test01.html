@@ -90,7 +90,7 @@
                            data-toggle="modal" 
                            ng-hide="{{seConnecter}}">Se Connecter
                         </a>
-                        <a id="myBtn" ng-show="{{seConnecter}}" click="logout()" class="md-button md-primary page-scroll">
+                        <a id="myBtn" ng-show="{{seConnecter}}" ng-click="logout()" class="md-button md-primary page-scroll">
                         	Se Déconnecter
                         </a>
                     </li>
@@ -210,7 +210,11 @@
 
         </div>
     </div>
+    
+ <!-- //////////////////////////////////////////////////////////////////// -->
 
+	<div id="missingInfo" class="glyphicon glyphicon-exclamation-sign" ng-show="{{popMod}}"></div>
+	
 <!-- //////////////////////////////////////////////////////////////////// -->
 
     <!-- Partenaires Section -->
@@ -385,7 +389,11 @@
                         
                         <center>   
 	                        <button id="myBtn" type="submit" class="btn mySize">Connexion</button> <br><br>
-	                        <button id="myBtnFB" type="button" class="btn mySize"  data-dismiss="modal">Via Facebook</button> 
+	                        <button id="myBtnFB" 
+	                        type="button" 
+	                        class="btn mySize" 
+	                        ng-click="login()"
+	                        data-dismiss-modal="true">Via Facebook</button> 
                         </center>
 
                     </form>
@@ -403,8 +411,8 @@
         </div>
     </div>
     
+
 <!-- //////////////////////////////////////////////////////////////////// -->
-  <!-- login facebook pas au point refaire le design du formulaire -->
     <!-- Inscription Modal -->
  
 <div class="modal fade" id="inscription" tabindex="-1" role="dialog" aria-hidden="true">
@@ -416,7 +424,7 @@
                     </button>
                     <h4 class="modal-title">S'incrire</h4>
                 </div>
-                
+                    
                 <form ng-submit="create()" class="form-horizontal" name="myForm">
                 <div class="modal-body">
                     
@@ -466,7 +474,6 @@
                         
                         <div ng-switch-when="two" class="wave">
                             
-
                             <md-input-container>
                                 <label>Password</label>
                                 <input type="password"
@@ -476,7 +483,7 @@
                                        ng-model="password"
                                        ng-required="true">
                             </md-input-container>
-
+													
                             <md-input-container>
                                 <label>Date de naissance</label>
                                 <input type="date"
@@ -520,13 +527,13 @@
                             
                             <p>Quel types de vins aimes-tu? *</p>
                             <div flex="50" flex-md="100" layout="column">
-                              <fieldset class="standard col-sx-4" flex>
+                              <fieldset class="standard col-sx-2" flex>
                                 <div layout="row" layout-wrap>
                                     <div flex="33"  ng-repeat="p in preference" ng-value="p.nom">
                                         <md-checkbox class="md-primary" ng-checked="exists(p.nom, types_preferer)" 
                                                      ng-click="toggle(p.nom, types_preferer)">
-                                            <img class="imgSize" src="img/tsw/{{ p.images}}" alt="">
-                                            <br>{{p.nom}}
+                                            <img id="imgSize" src="img/tsw/{{ p.images}}" alt="">
+                                            <br><p>{{p.nom}}</p>
                                         </md-checkbox>
                                     </div>
                                 </div>
@@ -555,10 +562,13 @@
                 <div class="modal-footer">
                     <!--<button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox" data-dismiss-modal="true">Valider</button>
                     --><button id="myBtn" class="btn" ng-click="handlePrevious()" ng-show="!isFirstStep()">Back</button>
-                    <button id="myBtn" type="{{submit}}" class="btn" ng-click="handleNext()">{{getNextLabel()}}</button>
+                    <button id="myBtn" type="submit" class="btn" ng-click="handleNext()">{{getNextLabel()}}</button>
                </div>
                     
-            </form>  
+            </form> 
+            
+         
+						
             </div>
         </div>
     </div> 

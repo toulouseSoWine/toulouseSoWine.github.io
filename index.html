@@ -380,18 +380,18 @@
                            
                          </md-grid-list>
                         
-                        <br><br>
-                        
+                        <br>
+				        <br>
                         
                         <center>   
 	                        <button id="myBtn" type="submit" class="btn mySize">Connexion</button> <br><br>
 	                        <button id="myBtnFB" 
-	                        type="button" 
-	                        class="btn mySize" 
-	                        ng-click="login()" 
-	                        data-target="#inscription"
-	                        data-toggle="modal"
-	                        data-dismiss-modal="{{cbLogin}}">Via Facebook</button> 
+			                        type="button" 
+			                        class="btn mySize" 
+			                        ng-click="login()" 
+			                        data-target="#inscriptionFB"
+			                        data-toggle="modal"
+			                        data-dismiss-modal="true">Via Facebook</button> 
                         </center>
 
                     </form>
@@ -400,7 +400,10 @@
                 <div class="modal-footer">
 	                <p class="myLeftPos">Vous n'êtes pas encore inscrit? 
 	                &nbsp; 
-	                    <a class="myCursor" data-target="#inscription" data-toggle="modal"> S'incrire !
+	                    <a 	class="myCursor" 
+	                    	data-target="#inscription" 
+	                    	data-toggle="modal" 
+	                    	data-dismiss-modal="true"> S'incrire !
 	                    </a>
 	                </p> 
                 </div>
@@ -410,7 +413,6 @@
     </div>
     
 <!-- //////////////////////////////////////////////////////////////////// -->
-  <!-- login facebook pas au point refaire le design du formulaire -->
     <!-- Inscription Modal -->
  
 <div class="modal fade" id="inscription" tabindex="-1" role="dialog" aria-hidden="true">
@@ -422,21 +424,17 @@
                     </button>
                     <h4 class="modal-title">S'incrire</h4>
                 </div>
-                
-            <div ng-show="{{cbLogin}}">    
-                <form ng-submit="create()" class="form-horizontal" name="myForm">
+                   
+                <form ng-submit="addUsers()" class="form-horizontal">
                 <div class="modal-body">
                     
-                    <md-grid-list
-                       md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6"
-                       md-row-height-gt-md="1:1" md-row-height="1:1"
-                       md-gutter="12px" md-gutter-gt-sm="8px" >
+                    <md-grid-list>
 
                         <!--The form is placed inside the body of modal -->
                        <div ng-switch="getCurrentStep()" class="my-slide-frame">
                            
                            <div ng-switch-when="one" class="wave">
-                        
+                        	
                             
                                 <md-input-container>
                                     <label>Nom</label>
@@ -446,7 +444,7 @@
                                            name="Nnom" 
                                            ng-model="nom"
                                            ng-required="true">
-                                </md-input-container>
+                                </md-input-container>{{nom}}
 
                                 <md-input-container>
                                     <label>Prenom</label>
@@ -456,9 +454,11 @@
                                            name="Nprenom" 
                                            ng-model="prenom"
                                            ng-required="true">
-                                </md-input-container>
-
-                                <md-input-container>
+                                </md-input-container>{{prenom}}
+                                
+							<div layout layout-sm="column">
+                               
+                                <md-input-container flex>
                                     <label>Email</label>
                                     <input type="email"
                                            ng-minlength="3"
@@ -468,67 +468,70 @@
                                            ng-required="true">
                                 </md-input-container>
                                 
+	                            <md-input-container flex>
+	                                <label>Password</label>
+	                                <input type="password"
+	                                       ng-minlength="3"
+	                                       ng-maxlength="15"
+	                                       name="Npass" 
+	                                       ng-model="password"
+	                                       ng-required="true">
+	                            </md-input-container>
+											
+                                </div>
+                                
+                                <div layout layout-sm="column">
+	                            <md-input-container flex>
+	                                <label>Date de naissance</label>
+	                                <input type="date"
+	                                       name="Ndate" 
+	                                       ng-model="dateN"
+	                                       ng-required="true">
+	                            </md-input-container>
+	
+	
+	                            <md-input-container flex>
+	                                <label>Ville</label>
+	                                <input type="text"
+	                                       ng-minlength="3"
+	                                       ng-maxlength="25"
+	                                       name="Nville" 
+	                                       ng-model="ville"
+	                                       ng-required="true">
+	                            </md-input-container>
+	                            
+	                            </div>
                             
                         </div>
                         
                         <div ng-switch-when="two" class="wave">
-                            
-                            <md-input-container>
-                                <label>Password</label>
-                                <input type="password"
-                                       ng-minlength="3"
-                                       ng-maxlength="15"
-                                       name="Npass" 
-                                       ng-model="password"
-                                       ng-required="true">
-                            </md-input-container>
-													
-                            <md-input-container>
-                                <label>Date de naissance</label>
-                                <input type="date"
-                                       name="Ndate" 
-                                       ng-model="dateN"
-                                       ng-required="true">
-                            </md-input-container>
-
-
-                            <md-input-container>
-                                <label>Ville</label>
-                                <input type="text"
-                                       ng-minlength="3"
-                                       ng-maxlength="25"
-                                       name="Nville" 
-                                       ng-model="ville"
-                                       ng-required="true">
-                            </md-input-container>
-                           
-                                
-                            
-                        </div>
-                        
-                        <div ng-switch-when="three" class="wave">
                           
                                 
                             <br>
                             
                             <p>Comment estime-tu ton niveau de connaissance des vins? *</p>
-                            <div layout="column" layout-wrap>
-                                <md-radio-group class="md-primary">
-                                    <md-radio-button ng-repeat="n in radioData" ng-value="n.value" ng-click="toggle(n.value,niveau)">
-                                        {{ n.value }}
-                                    </md-radio-button>
-                                </md-radio-group>
-                            </div>
-                           
-                            
-                        </div>    
-                        <div ng-switch-when="four" class="wave"> 
+                            <md-radio-group class="md-primary">
+	                            <div flex="50" flex-md="100" layout="column">
+	                              <fieldset class="standard" flex>
+	                                <div layout="row" layout-wrap>
+		                                
+		                                    <md-radio-button ng-repeat="n in radioData" ng-value="n.value" ng-click="toggle(n.value,niveau)">
+		                                        {{ n.value }}
+		                                    </md-radio-button>
+	                                </div>
+	                              </fieldset>
+	                            </div>
+                            </md-radio-group> 
+                        
+                        <br>
+				        <div class="myLigne"></div>
+				        <br>
                             
                             <p>Quel types de vins aimes-tu? *</p>
                             <div flex="50" flex-md="100" layout="column">
                               <fieldset class="standard col-sx-2" flex>
                                 <div layout="row" layout-wrap>
-                                    <div flex="33"  ng-repeat="p in preference" ng-value="p.nom">
+                                    <div flex="33" ng-repeat="p in preference" ng-value="p.nom">
                                         <md-checkbox class="md-primary" ng-checked="exists(p.nom, types_preferer)" 
                                                      ng-click="toggle(p.nom, types_preferer)">
                                             <img id="imgSize" src="img/tsw/{{ p.images}}" alt="">
@@ -538,6 +541,10 @@
                                 </div>
                               </fieldset>
                             </div>
+                        
+                        <br>
+				        <div class="myLigne"></div>
+				        <br>
                             
                             <md-checkbox ng-click="selected()">    
                                 <p style="font-size: 12px;">
@@ -550,24 +557,38 @@
                                     </a>
                                 </p>
                             </md-checkbox>
+                           
                             
-                         
-                        </div>
+                        </div>    
                  
                     </div>
                     </md-grid-list>
                 </div>
-                    <br><br><br>
+                    <br>
                 <div class="modal-footer">
                     <!--<button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox" data-dismiss-modal="true">Valider</button>
                     --><button id="myBtn" class="btn" ng-click="handlePrevious()" ng-show="!isFirstStep()">Back</button>
-                    <button id="myBtn" type="submit" class="btn" ng-click="handleNext()">{{getNextLabel()}}</button>
+                    <button id="myBtn" type="submit" class="btn">{{getNextLabel()}}</button>
                </div>
                     
             </form>  
-            </div>
             
-            <div ng-hide="{{cbLogin}}">
+            </div>
+        </div>
+    </div> 
+
+<!-- //////////////////////////////////////////////////////////////////// -->
+ 
+	<div class="modal fade" id="inscriptionFB" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" ng-model="completeInfo">
+                <div class="modal-header myHeadForm">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">S'incrire</h4>
+                </div>
+                
 	            <form ng-submit="fbLogged()" class="form-horizontal" name="myForm">
 	                <div class="modal-body">
 	                    
@@ -578,90 +599,78 @@
 	
 	                        <!--The form is placed inside the body of modal -->
 	                       <div ng-switch="getCurrentStep()" class="my-slide-frame">
-	                        
-	                        <div ng-switch-when="three" class="wave">
-	                        
-	                            <md-input-container>
-	                                <label>Date de naissance</label>
-	                                <input type="date"
-	                                       name="Ndate" 
-	                                       ng-model="dateN"
-	                                       ng-required="true">
-	                            </md-input-container>
-	
-	
-	                            <md-input-container>
-	                                <label>Ville</label>
-	                                <input type="text"
-	                                       ng-minlength="3"
-	                                       ng-maxlength="25"
-	                                       name="Nville" 
-	                                       ng-model="ville"
-	                                       ng-required="true">
-	                            </md-input-container>
-	                            <br>
-	                            
-	                            <p>Comment estime-tu ton niveau de connaissance des vins? *</p>
-	                            <div layout="column" layout-wrap>
-	                                <md-radio-group class="md-primary">
-	                                    <md-radio-button ng-repeat="n in radioData" ng-value="n.value" ng-click="toggle(n.value,niveau)">
-	                                        {{ n.value }}
-	                                    </md-radio-button>
-	                                </md-radio-group>
-	                            </div>
-	                                                         
-	                            
-	                        </div>
-	                        
-	                        <div ng-switch-when="four" class="wave">
-	                            
-	                            <p>Quel types de vins aimes-tu? *</p>
+                        
+                        <div ng-switch-when="two" class="wave">
+                          
+                                
+                            <br>
+                            
+                            <p>Comment estime-tu ton niveau de connaissance des vins? *</p>
+                            <md-radio-group class="md-primary">
 	                            <div flex="50" flex-md="100" layout="column">
-	                              <fieldset class="standard col-sx-2" flex>
+	                              <fieldset class="standard" flex>
 	                                <div layout="row" layout-wrap>
-	                                    <div flex="33"  ng-repeat="p in preference" ng-value="p.nom">
-	                                        <md-checkbox class="md-primary" ng-checked="exists(p.nom, types_preferer)" 
-	                                                     ng-click="toggle(p.nom, types_preferer)">
-	                                            <img id="imgSize" src="img/tsw/{{ p.images}}" alt="">
-	                                            <br><p>{{p.nom}}</p>
-	                                        </md-checkbox>
-	                                    </div>
+		                                
+		                                    <md-radio-button ng-repeat="n in radioData" ng-value="n.value" ng-click="toggle(n.value,niveau)">
+		                                        {{ n.value }}
+		                                    </md-radio-button>
 	                                </div>
 	                              </fieldset>
 	                            </div>
-	                            
-	                            <md-checkbox ng-click="selected()">    
-	                                <p style="font-size: 12px;">
-	                                    * Je reconnais avoir pris connaissance de l’objet associatif,de la
-	                                    <a data-toggle="modal" data-target="#charte" class="myCursor">
-	                                        Charte Ethique
-	                                    </a> et des 
-	                                    <a data-toggle="modal" data-target="#adhesion" class="myCursor">
-	                                        Conditions d'adhésion.
-	                                    </a>
-	                                </p>
-	                            </md-checkbox>
-	                            
-	                         
-	                        </div>
+                            </md-radio-group> 
+                        
+                        <br>
+				        <div class="myLigne"></div>
+				        <br>
+                            
+                            <p>Quel types de vins aimes-tu? *</p>
+                            <div flex="50" flex-md="100" layout="column">
+                              <fieldset class="standard col-sx-2" flex>
+                                <div layout="row" layout-wrap>
+                                    <div flex="33" ng-repeat="p in preference" ng-value="p.nom">
+                                        <md-checkbox class="md-primary" ng-checked="exists(p.nom, types_preferer)" 
+                                                     ng-click="toggle(p.nom, types_preferer)">
+                                            <img id="imgSize" src="img/tsw/{{ p.images}}" alt="">
+                                            <br><p>{{p.nom}}</p>
+                                        </md-checkbox>
+                                    </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                        
+                        <br>
+				        <div class="myLigne"></div>
+				        <br>
+                            
+                            <md-checkbox ng-click="selected()">    
+                                <p style="font-size: 12px;">
+                                    * Je reconnais avoir pris connaissance de l’objet associatif,de la
+                                    <a data-toggle="modal" data-target="#charte" class="myCursor">
+                                        Charte Ethique
+                                    </a> et des 
+                                    <a data-toggle="modal" data-target="#adhesion" class="myCursor">
+                                        Conditions d'adhésion.
+                                    </a>
+                                </p>
+                            </md-checkbox>
+                           
+                            
+                        </div>  
 	                 
 	                    </div>
 	                    </md-grid-list>
 	                </div>
-	                    <br><br><br>
+	                    <br>
 	                <div class="modal-footer">
-	                    <!--<button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox" data-dismiss-modal="true">Valider</button>
-	                    --><button id="myBtn" class="btn" ng-click="handlePrevious()" ng-show="!isFirstStep()">Back</button>
-	                    <button id="myBtn" type="submit" class="btn" ng-click="handleNext()">{{getNextLabel()}}</button>
+	                   <button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox">Valider</button>
 	               </div>
 	                    
 	            </form>  
-            </div>
-						
+          
+
             </div>
         </div>
     </div> 
-
 <!-- //////////////////////////////////////////////////////////////////// -->
 
     <!-- Modal Charte Ethique -->
