@@ -52,8 +52,8 @@ p{
 
 .carousel-inner>.item>img{
     position: relative;
-    height: auto;
-    width: auto;    
+    height: 100%;
+    width: 100%;    
 }
 
 .thumbnail{
@@ -67,6 +67,8 @@ p{
     text-justify: auto;
 }
 
+
+
 .owl-item .item{
     max-height: 300px;
     max-width: 160px;
@@ -78,6 +80,10 @@ p{
 
 .myCursor:hover{
     color: #EC3D93;
+}
+
+.size{
+	width: 80%;
 }
 
 #myBtnFB{
@@ -105,8 +111,8 @@ p{
 	max-width: 60%;
 }
 
-.mySize{
-	width: 80%;
+.mySize>p>img{
+	width: 100%;
 }
 
 .myRightPos{
