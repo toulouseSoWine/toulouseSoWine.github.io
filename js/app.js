@@ -102,8 +102,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
      $scope.create = function(){
         ref.createUser({
-            email    : info[2],
-            password : info[3]
+            email    : $scope.email,
+            password : $scope.password
             }, 
             function(error, userData) {
             	console.log("data :", userData);
@@ -123,12 +123,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                 // Si le compte se créer sans problème on enregistre les données dans la base
                 $scope.users.$add({
                     id: userData.uid,
-                    nom: info[0],
-                    prenom: info[1],
+                    nom: $scope.nom,
+                    prenom: $scope.prenom,
                     dateDeNaissance: dateNaissance,
-                    ville: info[5],
-                    email: info[2],
-                    password : info[3],
+                    ville: $scope.ville,
+                    email: $scope.email,
+                    password : $scope.password,
                     niveau_de_connaissance : niveau || 'null',
                     preferences : typeVin || 'null',
                     connectWith : 'firebase'
