@@ -137,7 +137,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                 ref.onAuth(cbAuth);
                
                 status();
-                 document.location.reload(true);
+                document.location.reload(true);
             }
         });
     };
@@ -182,7 +182,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         console.log('Déconnecter');
     };
     
-    var infos = [];
+    $scope.infos = {};
     
     var addUsers = function(){
     	
@@ -228,7 +228,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                 $scope.FBprenom = authData.facebook.cachedUserProfile.first_name;
                 $scope.FBdate = authData.facebook.cachedUserProfile.birthday;
                 $scope.email = authData.facebook.email;
-                
+                /*
+                var exist = status();
+                if(exist === true){
+                	
+                }
+                */
     			$scope.users.$add({
     			    id: $scope.fid,
     			    nom: $scope.FBnom,
@@ -256,9 +261,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 		var typeVin = $scope.types_preferer;
 		
 		ref.once('value',function(snapshot){
-			console.log(snapshot);
+			
 			snapshot.forEach(function(snap){
-				console.log(snap);
 			 	var mail = snap.child('email').val();
                 var provider = snap.child('connectWith').val();
                 var uid = snap.child('id').val();
@@ -267,9 +271,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                     if(auth.facebook.email === mail && auth.uid === uid){
       				  
                     	
-  					    snap.child('niveau_de_connaissance').set(niveau);
-  					    snap.child('preferences').set(typeVin);
-	  					
+                    	console.log(snap.child('email').val('salah.knk@gmail.com'));
+                    	console.log(snap.child('email').val());
                     }
                 }
 			});
@@ -378,6 +381,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         var idx = list.indexOf(item);
         if (idx > -1) list.splice(idx, 1);
         else list.push(item);
+        console.log(idx);
+        console.log(item + ' // ' + list);
     };
     
     $scope.exists = function (item, list) {
@@ -430,8 +435,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
      //Retourne l'image de l'evenement seulement
     function parseDesc(tabDesc){
-    	var start = '<p>';
-    	var end = '</p>';
+    	var start = '<img';
+    	var end = '/>';
     	
     	var i;
     	var j;
@@ -441,12 +446,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     	
     	console.log('function parse : ' + tabDesc);
     	for(i = 0; i < tabDesc.length; i++){
-    		var debut = tabDesc.charAt(i) + tabDesc.charAt(i + 1) + tabDesc.charAt(i + 2);
-    		
+    		var debut = tabDesc.charAt(i) + tabDesc.charAt(i + 1) + tabDesc.charAt(i + 2) + tabDesc.charAt(i + 3);
+    		var link = tabDesc.charAt(i) + tabDesc.charAt(i + 1) + tabDesc.charAt(i + 2) + tabDesc.charAt(i + 3);
     		if(debut === start){
     			for(j = i; j < tabDesc.length - 2; j ++){
     				s += tabDesc.charAt(j);
-    				var fin = tabDesc.charAt(j - 3) + tabDesc.charAt(j - 2) + tabDesc.charAt(j - 1) + tabDesc.charAt(j);
+    				var fin = tabDesc.charAt(j - 1) + tabDesc.charAt(j);
 	    			if(fin === end){
 	    				//s += end;
 	    				p.push(s);

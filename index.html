@@ -425,7 +425,7 @@
                     <h4 class="modal-title">S'incrire</h4>
                 </div>
                    
-                <form ng-submit="addUsers()" class="form-horizontal">
+                <form ng-submit="create()" class="form-horizontal">
                 <div class="modal-body">
                     
                     <md-grid-list>
@@ -444,7 +444,7 @@
                                            name="Nnom" 
                                            ng-model="nom"
                                            ng-required="true">
-                                </md-input-container>{{nom}}
+                                </md-input-container>
 
                                 <md-input-container>
                                     <label>Prenom</label>
@@ -454,7 +454,7 @@
                                            name="Nprenom" 
                                            ng-model="prenom"
                                            ng-required="true">
-                                </md-input-container>{{prenom}}
+                                </md-input-container>
                                 
 							<div layout layout-sm="column">
                                
@@ -568,7 +568,7 @@
                 <div class="modal-footer">
                     <!--<button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox" data-dismiss-modal="true">Valider</button>
                     --><button id="myBtn" class="btn" ng-click="handlePrevious()" ng-show="!isFirstStep()">Back</button>
-                    <button id="myBtn" type="submit" class="btn">{{getNextLabel()}}</button>
+                    <button id="myBtn" type="submit" class="btn" ng-click="handleNext()">{{getNextLabel()}}</button>
                </div>
                     
             </form>  
