@@ -175,6 +175,11 @@ p{
   right:100%;
 }
 
+.modal-body{
+	max-height: 500px;
+	overflow-y: auto;	
+}
+
 md-input-container label, md-input-container .md-placeholder {
 	color: #000;
 }
@@ -197,7 +202,6 @@ md-input-container label, md-input-container .md-placeholder {
     .carousel-inner>.item{
         max-width: 770px;
     }
-    
 }
 
 @media (max-width : 420px){
@@ -210,7 +214,7 @@ md-input-container label, md-input-container .md-placeholder {
 	
 	#imgSize{
 		max-width: 40%;
-	} 
+	}     
 }
 
 @media (max-width : 360px){

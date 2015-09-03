@@ -1,0 +1,14 @@
+{
+	"partenaires":
+	[
+		{   "images": "Chateau JOLIET - Vin Rouge - Negrette.jpg",
+	        "nom": "Joliet"
+	    },
+	    {   "images": "cransac-blanc-renaiisance.jpg",
+	        "nom": "Cransac"
+	    },
+	    {   "images": "chateau_tarriquet.jpg",
+	        "nom": "Tariquet"
+	    }
+    ]   
+}

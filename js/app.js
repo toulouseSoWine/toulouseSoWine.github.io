@@ -8,7 +8,7 @@
 
 //Helvetica Light!
 
-var app = angular.module('myApp',['ngMaterial','ngMessages','firebase','ngSanitize']);//
+var app = angular.module('myApp',['ngMaterial','ngMessages','firebase','ngSanitize']);
 
 
 app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
@@ -37,7 +37,6 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
           
         } else {
           console.log("Client unauthenticated.");
-          ref.offAuth();
         }
     };
     
@@ -63,9 +62,9 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                         return true;
                     }
                 }
-                if(info.provider === 'password'){
-                    if(info.password.email === mail && 
-                            info.uid === uid && provider === 'firebase'){
+                if(info.uid === uid){
+                    if(info.password.email === mail &&
+                    		provider === 'firebase'){
                         //ref.onAuth(cbAuth);
                         return true;
                     }
@@ -114,11 +113,11 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             } 
             else 
             {
-                console.log("Successfully created user account with uid:", userData.uid);
+                console.log("Successfully created user account with uid:", userData);
 
                 var niveau = $scope.niveau[0];
                 var typeVin = $scope.types_preferer;
-                var dateNaissance = formatDate(infos[4]);
+                var dateNaissance = formatDate($scope.dateN);
                 
                 // Si le compte se créer sans problème on enregistre les données dans la base
                 $scope.users.$add({
@@ -148,8 +147,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         var logged = false;
 
         ref.authWithPassword({
-            email    : $scope.email,
-            password : $scope.password
+            email    : $scope.Lemail,
+            password : $scope.Lpassword
             }, 
             function(error, authData) {
                 if (error) // Si l'utilisateur n'existe pas une erreur est déclencher
@@ -182,29 +181,6 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         console.log('Déconnecter');
     };
     
-    $scope.infos = {};
-    
-    var addUsers = function(){
-    	
-    	alert('function addUsers');
-		 infos.push($scope.nom);
-		 infos.push($scope.prenom);
-		 infos.push($scope.email);
-		 infos.push($scope.password);
-		 infos.push($scope.dateNaissance);
-		 infos.push($scope.ville);
-    	
-    	console.log('infos : ' + infos);
-    	for(var i = 0; i < infos.length; i++){
-    		if(infos[i] === ''){
-    			console.log('Erreur enregistrement des données');
-    		}
-    		else{
-    			$scope.handleNext();		
-    		}
-    	}
-    	  	
-    };
     /////////////////////////////////////
     /////       FACBOOK LOGIN       /////
     /////////////////////////////////////
@@ -215,7 +191,18 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             //authData.facebook.id+' // '+authData.facebook.email);
         	
           if (error) {
-                console.log("Login Failed!", error);
+        	  switch (error.code) {
+              case "INVALID_EMAIL":
+                console.log("Email Invalide");
+                break;
+              case "INVALID_PASSWORD":
+                console.log("Mot de passe incorrect.");
+                break;
+              case "INVALID_USER":
+                console.log("Utilisateur Invalide.");
+                break;
+              default:
+                console.log("Error logging user in:", error);}
           } else {
               //alert(authData.facebook.cachedUserProfile.last_name);
                 // the access token will allow us to make Open Graph API calls
@@ -250,7 +237,6 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
           scope: "email,user_likes,public_profile,user_birthday,user_hometown,user_location,user_about_me" // the permissions requested
         });   
         
-        $scope.setCurrentStep(1);
     };
 
     $scope.fbLogged = function(){
@@ -282,6 +268,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
  
     // Slide Modal Inscription   
+    /*
     var modal = this;
     
     modal.steps = ['one', 'two'];
@@ -322,14 +309,14 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             modal.step += 1;
         }
     };
-        
+        */
     
     $scope.seConnecter = status();
     console.log("se connecter status : "+$scope.seConnecter);
     
     // Informations sur les activité
     $scope.myActivity = [
-        {   images: 'degustation.jpg',
+        {   images: 'degustation1.jpg',
             titre: 'Initiation à la dégustation', 
             description: 'Dégustation dans des lieux athipiques de la région toulousaine de 4 à 6 vins du Sud-Ouest.'
         },
@@ -344,18 +331,38 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     ];
     
     // Informations sur les partenaires
-    $scope.myPartenaire = [
-        {   images: 'Chateau JOLIET - Vin Rouge - Negrette.jpg',
-            nom: 'Joliet'
-        },
-        {   images: 'cransac-blanc-renaiisance.jpg',
-            nom: 'Cransac'
-        },
-        {   images: 'chateau_tarriquet.jpg',
-            nom: 'Tariquet'
-        }
-    ];
-    
+    $scope.myPartenaire =
+    	[
+     		{   "images": "Chateau JOLIET - Vin Rouge - Negrette.jpg",
+    	        "nom": "Joliet"
+    	    },
+    	    {   "images": "cransac-blanc-renaiisance.jpg",
+    	        "nom": "Cransac"
+    	    },
+    	    {   "images": "chateau_tarriquet.jpg",
+    	        "nom": "Tariquet"
+    	    }
+	    ];
+    /*
+    $http.get('partenaires.json').success(function(data){
+    	var myArray = [];
+		var obj = [];
+    	for(var e = 0; e < data.partenaires.length; e++){
+    		var pics = data.partenaires[e].images;
+    		var name = data.partenaires[e].nom;
+    		obj.push(data.partenaires[e]);
+    		//myArray.push(name);
+    		//myArray.push(pics);
+    		myArray.push(obj[e]);
+    	}
+    	myArray = obj
+    	$scope.myPartenaire = data.partenaires;
+    	console.log(data);
+		console.log(myArray);
+    }).error(function(error){
+    	console.log(error);
+    });
+    */
     // Niveau de connaissance
     $scope.radioData = [
         { value: 'Néophite'},
@@ -418,57 +425,18 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
    
     // Pour que le Callback fonctionne cette ligne est obligatoire
     var json = $http.jsonp(url);
-    var tabEvent;
-    $scope.iEvent;
-    //$scope.linkEvent;
     $scope.myEvent;
     //console.log(angular.fromJson(test));
     
     // Callback pour le récuperation des données
     $window.apiCallback = function(json) {
-        console.log(json.results);
+        $scope.lon = json.results[0].venue.lon;
+        $scope.lat = json.results[0].venue.lat;
         $scope.myEvent = json.results[0].description;
-        tabEvent = parseDesc(json.results[0].description);
-        $scope.iEvent = tabEvent[0];
-        //$scope.linkEvent = tabEvent[4];
     };
     
-     //Retourne l'image de l'evenement seulement
-    function parseDesc(tabDesc){
-    	var start = '<img';
-    	var end = '/>';
-    	
-    	var i;
-    	var j;
-    	
-    	var p = [];
-    	var s = '';
-    	
-    	console.log('function parse : ' + tabDesc);
-    	for(i = 0; i < tabDesc.length; i++){
-    		var debut = tabDesc.charAt(i) + tabDesc.charAt(i + 1) + tabDesc.charAt(i + 2) + tabDesc.charAt(i + 3);
-    		var link = tabDesc.charAt(i) + tabDesc.charAt(i + 1) + tabDesc.charAt(i + 2) + tabDesc.charAt(i + 3);
-    		if(debut === start){
-    			for(j = i; j < tabDesc.length - 2; j ++){
-    				s += tabDesc.charAt(j);
-    				var fin = tabDesc.charAt(j - 1) + tabDesc.charAt(j);
-	    			if(fin === end){
-	    				//s += end;
-	    				p.push(s);
-	    				console.log('s : ' +s);
-
-	    				s = '';
-	    				return p;
-	    			}
-    			}
-    			i = j;
-    		}
-    	} 
-    	console.log(p);
-    	return p;
-    };
     /*
-    *
+    
     // Callback pour le récuperation des données
     $window.apiCallback = function(data) {
         console.log(data.results[0].description);

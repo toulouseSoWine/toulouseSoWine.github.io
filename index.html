@@ -30,6 +30,7 @@
     <link href="css/newCss.css" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     
+    
     <!-- Custom Fonts
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
@@ -63,7 +64,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img class="myLogo" src="img/tsw/logo.png" alt="">
+                <a href="#"><img class="myLogo" src="img/tsw/logo.png" alt=""></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -116,11 +117,11 @@
             <div class="carousel-inner owl-theme">
 
                 <div class="item active">
-                    <img src="img/tsw/fotolia_80535934.png" alt="" class="img-responsive">
+                    <img src="img/tsw/fotolia1.png" alt="" class="img-responsive">
                 </div>
 
                 <div class="item">
-                    <img src="img/tsw/fotolia_68967615.png" alt="" class="img-responsive">
+                    <img src="img/tsw/fotolia2.png" alt="" class="img-responsive">
                 </div>                
             </div>
             
@@ -156,7 +157,7 @@
             </div>
             <center>
                 <div class="col-lg-10">
-                    <p class="section-subheading text-justify">
+                    <p class="section-subheading">
                         ToulouseSoWine a pour but de favoriser la connaissance et 
                         la découverte des vins et du terroir du sud-ouest par 
                         des cycles ou séances d'initiation et d'information et 
@@ -204,10 +205,7 @@
                     <hr>
                 </div>
             </div>
-            <center>
             <div class="mySize" ng-bind-html="myEvent"></div>
-            </center>
-
         </div>
     </div>
 
@@ -363,7 +361,7 @@
                                        ng-minlength="3"
                                        ng-maxlength="30"
                                        name="Nemail" 
-                                       ng-model="email"
+                                       ng-model="Lemail"
                                        ng-required="true">
                             </md-input-container>
                         
@@ -373,7 +371,7 @@
                                        ng-minlength="3"
                                        ng-maxlength="15"
                                        name="Npass" 
-                                       ng-model="password"
+                                       ng-model="Lpassword"
                                        ng-required="true">
                             </md-input-container>
 
@@ -429,14 +427,9 @@
                 <div class="modal-body">
                     
                     <md-grid-list>
-
-                        <!--The form is placed inside the body of modal -->
-                       <div ng-switch="getCurrentStep()" class="my-slide-frame">
-                           
-                           <div ng-switch-when="one" class="wave">
-                        	
-                            
-                                <md-input-container>
+						
+                            <div layout layout-sm="column">
+                                <md-input-container flex>
                                     <label>Nom</label>
                                     <input type="text"
                                            ng-minlength="3"
@@ -446,7 +439,7 @@
                                            ng-required="true">
                                 </md-input-container>
 
-                                <md-input-container>
+                                <md-input-container flex>
                                     <label>Prenom</label>
                                     <input type="text"
                                            ng-minlength="3"
@@ -455,7 +448,7 @@
                                            ng-model="prenom"
                                            ng-required="true">
                                 </md-input-container>
-                                
+                            </div>    
 							<div layout layout-sm="column">
                                
                                 <md-input-container flex>
@@ -502,11 +495,7 @@
 	                            
 	                            </div>
                             
-                        </div>
-                        
-                        <div ng-switch-when="two" class="wave">
-                          
-                                
+                           
                             <br>
                             
                             <p>Comment estime-tu ton niveau de connaissance des vins? *</p>
@@ -534,7 +523,7 @@
                                     <div flex="33" ng-repeat="p in preference" ng-value="p.nom">
                                         <md-checkbox class="md-primary" ng-checked="exists(p.nom, types_preferer)" 
                                                      ng-click="toggle(p.nom, types_preferer)">
-                                            <img id="imgSize" src="img/tsw/{{ p.images}}" alt="">
+                                            <img id="imgSize" src="img/tsw/{{p.images}}" alt="">
                                             <br><p>{{p.nom}}</p>
                                         </md-checkbox>
                                     </div>
@@ -557,19 +546,14 @@
                                     </a>
                                 </p>
                             </md-checkbox>
-                           
-                            
-                        </div>    
-                 
-                    </div>
+                          
                     </md-grid-list>
                 </div>
-                    <br>
+                
+                    
                 <div class="modal-footer">
-                    <!--<button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox" data-dismiss-modal="true">Valider</button>
-                    --><button id="myBtn" class="btn" ng-click="handlePrevious()" ng-show="!isFirstStep()">Back</button>
-                    <button id="myBtn" type="submit" class="btn" ng-click="handleNext()">{{getNextLabel()}}</button>
-               </div>
+                   <button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox" data-dismiss-modal="true">Valider</button>
+                </div>
                     
             </form>  
             
@@ -662,7 +646,7 @@
 	                </div>
 	                    <br>
 	                <div class="modal-footer">
-	                   <button id="myBtn" class="btn" type="submit" ng-disabled="selectedCheckbox">Valider</button>
+	                   <button id="myBtn" class="btn" type="submit" ng-disabled="{{selectedCheckbox}}" data-dismiss="modal">Valider</button>
 	               </div>
 	                    
 	            </form>  
@@ -1102,7 +1086,7 @@
     </div>
 
 <!-- //////////////////////////////////////////////////////////////////// -->
-    
+
     <!-- Angular module -->
     <!-- <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
@@ -1129,7 +1113,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="js/classie.js"></script>
     <script src="js/cbpAnimatedHeader.js"></script>
     <script type="text/javascript" src="js/jquery.isotope.js"></script>
