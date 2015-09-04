@@ -33,10 +33,10 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
     var cbAuth = function(authData) {
         if (authData) {
-          console.log("Authenticated with uid:", authData.uid);
+          //console.log("Authenticated with uid:", authData.uid);
           
         } else {
-          console.log("Client unauthenticated.");
+          //console.log("Client unauthenticated.");
         }
     };
     
@@ -84,16 +84,16 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             console.log(auth);
             var stats = adh(auth);
             if(stats === true){
-                console.log('L\'utilisateur existe dans la base' );
+                //console.log('L\'utilisateur existe dans la base' );
             }
-            console.log("exist apres appel fonction "+ stats);
+            //console.log("exist apres appel fonction "+ stats);
             ref.onAuth(cbAuth);
             //hoteProvider = auth.provider;
             // Desactivé inscription si vrai
             return true;
         }
         else{
-            console.log("Déconnecter "+auth);
+            //console.log("Déconnecter "+auth);
             return false;
         }
 
@@ -105,15 +105,15 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             password : $scope.password
             }, 
             function(error, userData) {
-            	console.log("data :", userData);
+            	//console.log("data :", userData);
             if (error) 
             {
-                console.log("Error creating user:", error);
+                //console.log("Error creating user:", error);
                 ref.offAuth(cbAuth);
             } 
             else 
             {
-                console.log("Successfully created user account with uid:", userData);
+                //console.log("Successfully created user account with uid:", userData);
 
                 var niveau = $scope.niveau[0];
                 var typeVin = $scope.types_preferer;
@@ -206,7 +206,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
           } else {
               //alert(authData.facebook.cachedUserProfile.last_name);
                 // the access token will allow us to make Open Graph API calls
-                console.log(authData); 
+                //console.log(authData); 
                 
                 var typeVin = $scope.types_preferer;
                 
@@ -257,14 +257,14 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                     if(auth.facebook.email === mail && auth.uid === uid){
       				  
                     	
-                    	console.log(snap.child('email').val('salah.knk@gmail.com'));
-                    	console.log(snap.child('email').val());
+                    	//console.log(snap.child('email').val('salah.knk@gmail.com'));
+                    	//console.log(snap.child('email').val());
                     }
                 }
 			});
 		});
 			
-    }
+    };
 
  
     // Slide Modal Inscription   
@@ -312,7 +312,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         */
     
     $scope.seConnecter = status();
-    console.log("se connecter status : "+$scope.seConnecter);
+    //console.log("se connecter status : "+$scope.seConnecter);
     
     // Informations sur les activité
     $scope.myActivity = [
@@ -331,19 +331,17 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     ];
     
     // Informations sur les partenaires
-    $scope.myPartenaire =
-    	[
-     		{   "images": "Chateau JOLIET - Vin Rouge - Negrette.jpg",
-    	        "nom": "Joliet"
-    	    },
-    	    {   "images": "cransac-blanc-renaiisance.jpg",
-    	        "nom": "Cransac"
-    	    },
-    	    {   "images": "chateau_tarriquet.jpg",
-    	        "nom": "Tariquet"
-    	    }
-	    ];
-    /*
+    $scope.myPartenaire = [
+        /*{   images: 'Chateau JOLIET - Vin Rouge - Negrette.jpg',
+            nom: 'Joliet'
+        },
+        {   images: 'cransac-blanc-renaiisance.jpg',
+            nom: 'Cransac'
+        },
+        {   images: 'chateau_tarriquet.jpg',
+            nom: 'Tariquet'
+        }*/
+    ];
     $http.get('partenaires.json').success(function(data){
     	var myArray = [];
 		var obj = [];
@@ -355,14 +353,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     		//myArray.push(pics);
     		myArray.push(obj[e]);
     	}
-    	myArray = obj
     	$scope.myPartenaire = data.partenaires;
     	console.log(data);
-		console.log(myArray);
+		console.log($scope.myPartenaire);
     }).error(function(error){
     	console.log(error);
     });
-    */
     // Niveau de connaissance
     $scope.radioData = [
         { value: 'Néophite'},
@@ -388,8 +384,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         var idx = list.indexOf(item);
         if (idx > -1) list.splice(idx, 1);
         else list.push(item);
-        console.log(idx);
-        console.log(item + ' // ' + list);
+        //console.log(idx);
+        //console.log(item + ' // ' + list);
     };
     
     $scope.exists = function (item, list) {
@@ -408,7 +404,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
     $scope.selected =function(){
       $scope.selectedCheckbox = !$scope.selectedCheckbox;
-      console.log(this.selectedCheckbox);
+      //console.log(this.selectedCheckbox);
     };
     
 
@@ -420,8 +416,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
     //Vous devez spécifier un paramètre de rappel dans votre URL qui sera 
     //le même que le nom de la fonction qui sera utilisée pour traiter les données renvoyées.
-    var url = 
-            'https://api.meetup.com/2/events?callback=apiCallback&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
+    var url = 'https://api.meetup.com/2/events?callback=apiCallback&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
    
     // Pour que le Callback fonctionne cette ligne est obligatoire
     var json = $http.jsonp(url);
@@ -430,8 +425,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
     // Callback pour le récuperation des données
     $window.apiCallback = function(json) {
-        $scope.lon = json.results[0].venue.lon;
-        $scope.lat = json.results[0].venue.lat;
+        //$scope.lon = json.results[0].venue.lon;
+        //$scope.lat = json.results[0].venue.lat;
         $scope.myEvent = json.results[0].description;
     };
     
@@ -443,4 +438,51 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         $scope.myEvent = data.results[0].description;
     };*/
 
+  $scope.sendMail = function(){
+    var mailJSON ={
+        "key": "aL2Sk6_lpO96reX3DxrgZA",
+        "message": {
+          "html": ""+$scope.smailContent,
+          /*"text": ""+$scope.smailContent,*/
+          "from_email": $scope.smail,
+          "from_name": $scope.snom,
+          "to": [
+            {
+              "email": "salah.knk@gmail.com",
+              "name": "ToulouseSoWine",
+              "type": "to"
+            }
+          ],
+          "important": false,
+          "track_opens": null,
+          "track_clicks": null,
+          "auto_text": null,
+          "auto_html": null,
+          "inline_css": null,
+          "url_strip_qs": null,
+          "preserve_recipients": null,
+          "view_content_link": null,
+          "tracking_domain": null,
+          "signing_domain": null,
+          "return_path_domain": null
+        },
+        "async": false,
+        "ip_pool": "Main Pool"
+    };
+    var apiURL = "https://mandrillapp.com/api/1.0/messages/send.json";
+    $http.post(apiURL, mailJSON).
+      success(function(data, status, headers, config) {
+        alert('successful email send.');
+        /*$scope.form={};
+        console.log($scope.form);
+        console.log('successful email send.');*/
+        console.log('status: ' + status);
+        /*console.log('data: ' + data);
+        console.log('headers: ' + headers);
+        console.log('config: ' + config);*/
+      }).error(function(data, status, headers, config) {
+        console.log('error sending email.');
+        console.log('status: ' + status);
+      });
+  };
 }]);

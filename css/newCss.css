@@ -67,9 +67,7 @@ p{
     text-justify: auto;
 }
 
-
-
-.owl-item .item{
+.owl-item>.item{
     max-height: 300px;
     max-width: 160px;
 }
