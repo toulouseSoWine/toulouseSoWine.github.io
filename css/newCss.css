@@ -100,7 +100,7 @@ p{
 }
 
 #myBtn:hover{
-    color: #fff;
+    color: white;
     border-radius: 5px;
     background-color: #EC3D93;
 }
@@ -138,15 +138,8 @@ p{
     max-height: 300px;
     max-width: 160px;
 }
-
-.my-slide-frame {
-  position:relative;
-  min-height:240px;
-  overflow:hidden;
-}
-
-.my-slide-frame > div {
-  width:100%;
+ul.social-buttons li a{
+    background-color: #3b5998;
 }
 
 /* modal and step animations */

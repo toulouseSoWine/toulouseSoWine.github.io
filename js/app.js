@@ -480,6 +480,9 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         /*console.log('data: ' + data);
         console.log('headers: ' + headers);
         console.log('config: ' + config);*/
+          $scope.smailContent = '';
+          $scope.smail = '';
+          $scope.snom = '';
       }).error(function(data, status, headers, config) {
         console.log('error sending email.');
         console.log('status: ' + status);
