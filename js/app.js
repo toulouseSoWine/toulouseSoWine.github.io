@@ -14,12 +14,37 @@ var app = angular.module('myApp',['ngMaterial','ngMessages','firebase','ngSaniti
 app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     function($scope,$firebaseArray,$http,$window){
     
-    // Initialisation, Valorisation et Creéation de la table adhérents dans la base
+    // Initialisation, Valorisation et Création de la table adhérents dans la base
     var url = 'https://toulouse-so-wine.firebaseio.com/adherents';
     var ref = new Firebase(url);
     $scope.users = $firebaseArray(ref);
+
+
+    /////////////////////////////////////
+    /////        MEETUP API         /////
+    /////////////////////////////////////
     
+   // MeetUp API url utiliser pour recevoir les données sous format JSON
+
+    //Vous devez spécifier un paramètre de rappel dans votre URL qui sera 
+    //le même que le nom de la fonction qui sera utilisée pour traiter les données renvoyées.
+    var url = 'https://api.meetup.com/2/events?callback=apiCallback&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
+   
+    // Pour que le Callback fonctionne cette ligne est obligatoire
+    var json = $http.jsonp(url);
+    $scope.myEvent;
+    
+    // Callback pour le récuperation des données
+    $window.apiCallback = function(json) {
+	
+        //$scope.lon = json.results[0].venue.lon;
+        //$scope.lat = json.results[0].venue.lat;
+
+        $scope.myEvent = json.results[0].description;
+    };
+        
   
+	// JJ/MM/AAAA
     function formatDate(dn){
     	dn = new Date();
         var y = dn.getFullYear().toString();
@@ -40,9 +65,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         }
     };
     
-    var url = 'https://toulouse-so-wine.firebaseio.com/adherents';
-    var ref = new Firebase(url);
-
+	// Vérifie si un utilisateur existe dans la base
     var adh = function(info){
 
         ref.once('value',function(snapshot){
@@ -77,19 +100,19 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         });
     };
 
+	// Vérifie si l'utilisateur est connecter ou non
     var status = function(){
+	// On récupère les informations de l'utilisateur en ligne
         var auth = ref.getAuth();
-
+		
+		// Si il y'en a un
         if(auth){
             console.log(auth);
-            var stats = adh(auth);
-            if(stats === true){
-                //console.log('L\'utilisateur existe dans la base' );
-            }
+			// On vérifie si celui-ci est un adhérent
+            adh(auth);
             //console.log("exist apres appel fonction "+ stats);
             ref.onAuth(cbAuth);
-            //hoteProvider = auth.provider;
-            // Desactivé inscription si vrai
+            // Désactivé inscription si vrai
             return true;
         }
         else{
@@ -99,7 +122,8 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
     };
     
-     $scope.create = function(){
+	// Création d'un nouvelle adhérent
+	$scope.create = function(){
         ref.createUser({
             email    : $scope.email,
             password : $scope.password
@@ -114,7 +138,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             else 
             {
                 //console.log("Successfully created user account with uid:", userData);
-
+                
                 var niveau = $scope.niveau[0];
                 var typeVin = $scope.types_preferer;
                 var dateNaissance = formatDate($scope.dateN);
@@ -135,20 +159,21 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
                 
                 ref.onAuth(cbAuth);
                
+                $scope.loggedIn();
                 status();
                 document.location.reload(true);
             }
         });
     };
-   
+    console.log(status());
     // Fonction qui va servir à authentifier un utilisateur
     $scope.loggedIn = function(){
 
         var logged = false;
 
         ref.authWithPassword({
-            email    : $scope.Lemail,
-            password : $scope.Lpassword
+            email    : $scope.email,
+            password : $scope.password
             }, 
             function(error, authData) {
                 if (error) // Si l'utilisateur n'existe pas une erreur est déclencher
@@ -172,12 +197,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 
         return logged;
     };
-
+	
+	// Déconnection
     $scope.logout  = function(){
         ref.offAuth(cbAuth);
         ref.unauth();
         document.location.reload(true);
-        getStatus();
         console.log('Déconnecter');
     };
     
@@ -188,49 +213,29 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     
     $scope.login = function() {
         ref.authWithOAuthPopup("facebook", function(error, authData) {
+		console.log(authData);
             //authData.facebook.id+' // '+authData.facebook.email);
-        	
           if (error) {
-        	  switch (error.code) {
-              case "INVALID_EMAIL":
-                console.log("Email Invalide");
-                break;
-              case "INVALID_PASSWORD":
-                console.log("Mot de passe incorrect.");
-                break;
-              case "INVALID_USER":
-                console.log("Utilisateur Invalide.");
-                break;
-              default:
-                console.log("Error logging user in:", error);}
+                console.log("Error logging user in:", error);
           } else {
-              //alert(authData.facebook.cachedUserProfile.last_name);
-                // the access token will allow us to make Open Graph API calls
-                //console.log(authData); 
-                
                 var typeVin = $scope.types_preferer;
                 
-                $scope.fid = authData.uid;
-                $scope.FBnom = authData.facebook.cachedUserProfile.last_name;
-                $scope.FBprenom = authData.facebook.cachedUserProfile.first_name;
-                $scope.FBdate = authData.facebook.cachedUserProfile.birthday;
-                $scope.email = authData.facebook.email;
-                /*
-                var exist = status();
-                if(exist === true){
-                	
-                }
-                */
-    			$scope.users.$add({
-    			    id: $scope.fid,
-    			    nom: $scope.FBnom,
-    			    prenom: $scope.FBprenom,
-    			    email: $scope.email,
-    			    connectWith : 'facebook',
-				    dateDeNaissance: $scope.FBdate,
-				    niveau_de_connaissance : $scope.niveau[0] || 'null',
-				    preferences : $scope.types_preferer || 'null'
-    			}); 
+				ref.$push({
+					id: authData.uid,
+					nom: authData.facebook.cachedUserProfile.last_name,
+					prenom: authData.facebook.cachedUserProfile.first_name,
+					email: authData.facebook.email,
+					connectWith : 'facebook',
+					dateDeNaissance: authData.facebook.cachedUserProfile.birthday,
+					niveau_de_connaissance : $scope.niveau[0] || 'null',
+					preferences : $scope.types_preferer || 'null'
+				}); 
+						
+				ref.onAuth(cbAuth);
+			   
+				status();
+				//document.location.reload(true);
+				
                
           }
         }, {
@@ -238,7 +243,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
         });   
         
     };
-
+	/*
     $scope.fbLogged = function(){
 		
 		var auth = ref.getAuth();
@@ -265,7 +270,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
 		});
 			
     };
-
+	*/
  
     // Slide Modal Inscription   
     /*
@@ -354,11 +359,12 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     		myArray.push(obj[e]);
     	}
     	$scope.myPartenaire = data.partenaires;
-    	console.log(data);
-		console.log($scope.myPartenaire);
+    	//console.log(data);
+        console.log($scope.myPartenaire);
     }).error(function(error){
     	console.log(error);
     });
+	
     // Niveau de connaissance
     $scope.radioData = [
         { value: 'Néophite'},
@@ -380,6 +386,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     ];
     
     $scope.types_preferer = [];
+	
     $scope.toggle = function (item, list) {
         var idx = list.indexOf(item);
         if (idx > -1) list.splice(idx, 1);
@@ -408,84 +415,55 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
     };
     
 
-    /////////////////////////////////////
-    /////        MEETUP API         /////
-    /////////////////////////////////////
-    
-   // MeetUp API url utiliser pour recevoir les données sous format JSON
-
-    //Vous devez spécifier un paramètre de rappel dans votre URL qui sera 
-    //le même que le nom de la fonction qui sera utilisée pour traiter les données renvoyées.
-    var url = 'https://api.meetup.com/2/events?callback=apiCallback&sign=true&photo-host=public&group_urlname=ToulouseSoWine&page=20&key=271548165724ccf206a342412621';
-   
-    // Pour que le Callback fonctionne cette ligne est obligatoire
-    var json = $http.jsonp(url);
-    $scope.myEvent;
-    //console.log(angular.fromJson(test));
-    
-    // Callback pour le récuperation des données
-    $window.apiCallback = function(json) {
-        //$scope.lon = json.results[0].venue.lon;
-        //$scope.lat = json.results[0].venue.lat;
-        $scope.myEvent = json.results[0].description;
-    };
-    
-    /*
-    
-    // Callback pour le récuperation des données
-    $window.apiCallback = function(data) {
-        console.log(data.results[0].description);
-        $scope.myEvent = data.results[0].description;
-    };*/
-
-  $scope.sendMail = function(){
-    var mailJSON ={
-        "key": "aL2Sk6_lpO96reX3DxrgZA",
-        "message": {
-          "html": ""+$scope.smailContent,
-          /*"text": ""+$scope.smailContent,*/
-          "from_email": $scope.smail,
-          "from_name": $scope.snom,
-          "to": [
-            {
-              "email": "salah.knk@gmail.com",
-              "name": "ToulouseSoWine",
-              "type": "to"
-            }
-          ],
-          "important": false,
-          "track_opens": null,
-          "track_clicks": null,
-          "auto_text": null,
-          "auto_html": null,
-          "inline_css": null,
-          "url_strip_qs": null,
-          "preserve_recipients": null,
-          "view_content_link": null,
-          "tracking_domain": null,
-          "signing_domain": null,
-          "return_path_domain": null
-        },
-        "async": false,
-        "ip_pool": "Main Pool"
-    };
-    var apiURL = "https://mandrillapp.com/api/1.0/messages/send.json";
-    $http.post(apiURL, mailJSON).
-      success(function(data, status, headers, config) {
-        alert('successful email send.');
-        /*$scope.form={};
-        console.log($scope.form);
-        console.log('successful email send.');*/
-        console.log('status: ' + status);
-        /*console.log('data: ' + data);
-        console.log('headers: ' + headers);
-        console.log('config: ' + config);*/
-          $scope.smailContent = '';
-          $scope.smail = '';
-          $scope.snom = '';
-      }).error(function(data, status, headers, config) {
-        console.log('error sending email.');
-        console.log('status: ' + status);
-      });
-  };
+	// Envoi d'email via API Mandrill
+	$scope.sendMail = function(){
+		var mailJSON ={
+			"key": "aL2Sk6_lpO96reX3DxrgZA",
+			"message": {
+			  "html": ""+$scope.smailContent,
+			  /*"text": ""+$scope.smailContent,*/
+			  "from_email": $scope.smail,
+			  "from_name": $scope.snom,
+			  "to": [
+				{
+				  "email": "salah.knk@gmail.com",// ToulouseSoWine@gmail.com
+				  "name": "ToulouseSoWine",
+				  "type": "to"
+				}
+			  ],
+			  "important": false,
+			  "track_opens": null,
+			  "track_clicks": null,
+			  "auto_text": null,
+			  "auto_html": null,
+			  "inline_css": null,
+			  "url_strip_qs": null,
+			  "preserve_recipients": null,
+			  "view_content_link": null,
+			  "tracking_domain": null,
+			  "signing_domain": null,
+			  "return_path_domain": null
+			},
+			"async": false,
+			"ip_pool": "Main Pool"
+		};
+		var apiURL = "https://mandrillapp.com/api/1.0/messages/send.json";
+		$http.post(apiURL, mailJSON).
+		  success(function(data, status, headers, config) {
+			alert('successful email send.');
+			/*$scope.form={};
+			console.log($scope.form);
+			console.log('successful email send.');*/
+			console.log('status: ' + status);
+			/*console.log('data: ' + data);
+			console.log('headers: ' + headers);
+			console.log('config: ' + config);*/
+			  $scope.smailContent = '';
+			  $scope.smail = '';
+			  $scope.snom = '';
+		  }).error(function(data, status, headers, config) {
+			console.log('error sending email.');
+			console.log('status: ' + status);
+		  });
+	};
 }]);

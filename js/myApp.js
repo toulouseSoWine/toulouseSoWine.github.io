@@ -47,7 +47,7 @@ app.controller("myCtrl",["$scope","$firebaseArray","$http","$window",
             nom: 'Tariquet'
         }
     ];
-    
+    console.log($scope.myPartenaire);
     // Niveau de connaissance
     $scope.radioData = [
         { value: 'Ne sais pas choisir son vin'},

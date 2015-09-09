@@ -52,7 +52,7 @@
 
 <body id="page-top" class="index" ng-controller="myCtrl">
 
-<div id="fb-root"></div>
+    <div id="fb-root"></div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -105,7 +105,6 @@
 
 <!-- //////////////////////////////////////////////////////////////////// -->
 
-
     <!-- Header -->
     <div id="myCarousel" class="carousel slide">
            
@@ -140,8 +139,6 @@
             </a>  
            
     </div>
-
-
 
 <!-- ////////////////////////////////////////////////////////////////////// -->
 
@@ -206,7 +203,9 @@
                     <hr>
                 </div>
             </div>
+            <center>
             <div class="mySize" ng-bind-html="myEvent"></div>
+            </center>
         </div>
     </div>
 
@@ -249,8 +248,7 @@
 
 <!-- //////////////////////////////////////////////////////////////////// -->
     
-    <!-- Contact Section -->
-    
+    <!-- Contact Section -->  
     <div id="contact" class="container">
 
         <br>
@@ -264,7 +262,7 @@
 
         <div class="row">
 
-                <div class="col-md-6 jumbotron">
+                <div class="col-md-6">
                     <div class="section-title center">
                         <h3 class="text-center">Toulouse So Wine</h3>
                     </div>
@@ -361,7 +359,7 @@
                                        ng-minlength="3"
                                        ng-maxlength="30"
                                        name="Nemail" 
-                                       ng-model="Lemail"
+                                       ng-model="email"
                                        ng-required="true">
                             </md-input-container>
                         
@@ -371,7 +369,7 @@
                                        ng-minlength="3"
                                        ng-maxlength="15"
                                        name="Npass" 
-                                       ng-model="Lpassword"
+                                       ng-model="password"
                                        ng-required="true">
                             </md-input-container>
 
@@ -401,7 +399,7 @@
 	                    <a 	class="myCursor" 
 	                    	data-target="#inscription" 
 	                    	data-toggle="modal" 
-	                    	data-dismiss="modal"> S'incrire !
+	                    	data-dismiss-modal="true"> S'incrire !
 	                    </a>
 	                </p> 
                 </div>
@@ -412,8 +410,7 @@
     
 <!-- //////////////////////////////////////////////////////////////////// -->
     <!-- Inscription Modal -->
- 
-<div class="modal fade" id="inscription" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="inscription" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" ng-model="completeInfo">
                 <div class="modal-header myHeadForm">
@@ -513,12 +510,12 @@
                             </md-radio-group> 
                         
                         <br>
-				        <div class="myLigne"></div>
-				        <br>
+                        <div class="myLigne"></div>
+                        <br>
                             
                             <p>Quel types de vins aimes-tu? *</p>
                             <div flex="50" flex-md="100" layout="column">
-                              <fieldset class="standard col-sx-2" flex>
+                              <fieldset class="standard col-sx-2 col-md-4" flex>
                                 <div layout="row" layout-wrap>
                                     <div flex="33" ng-repeat="p in preference" ng-value="p.nom">
                                         <md-checkbox class="md-primary" ng-checked="exists(p.nom, types_preferer)" 
@@ -563,7 +560,7 @@
 
 <!-- //////////////////////////////////////////////////////////////////// -->
  
-	<div class="modal fade" id="inscriptionFB" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="inscriptionFB" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" ng-model="completeInfo">
                 <div class="modal-header myHeadForm">
@@ -658,7 +655,7 @@
 <!-- //////////////////////////////////////////////////////////////////// -->
 
     <!-- Modal Charte Ethique -->
-      <div class="portfolio-modal modal fade" id="charte" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="charte" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -803,7 +800,7 @@
 <!-- //////////////////////////////////////////////////////////////////// -->
 
     <!-- Modal Mentions Légales -->
-      <div class="portfolio-modal modal fade" id="legal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="legal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -953,7 +950,7 @@
 <!-- //////////////////////////////////////////////////////////////////// -->
 
     <!-- Modal Conditions d'adhésion -->
-      <div class="portfolio-modal modal fade" id="adhesion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="adhesion" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
